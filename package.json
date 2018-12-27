@@ -1,0 +1,34 @@
+{
+  "name": "miner-sapper",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "express": "^4.16.4",
+    "firebase": "^5.7.1",
+    "lowdb": "^1.0.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "serve-static": "^1.13.2",
+    "vue": "^2.5.17",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "vue-template-compiler": "^2.5.17"
+  }
+}
