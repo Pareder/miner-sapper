@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Config from '../config'
 import Home from '../components/Home'
-import Field from '../components/Field'
+import Miner from '../components/Miner'
+import Snake from '../components/Snake'
+import Tetris from '../components/Tetris'
+import Crush from '../components/Crush'
 
 Vue.use(Router)
 
@@ -17,21 +20,39 @@ const router = new Router({
     },
     {
       name: 'Easy',
-      path: '/easy',
-      component: Field,
-      props: { options: Config.easy }
+      path: '/miner/easy',
+      component: Miner,
+      props: { options: Config.miner.easy }
     },
     {
       name: 'Medium',
-      path: '/medium',
-      component: Field,
-      props: { options: Config.medium }
+      path: '/miner/medium',
+      component: Miner,
+      props: { options: Config.miner.medium }
     },
     {
       name: 'Hard',
-      path: '/hard',
-      component: Field,
-      props: { options: Config.hard }
+      path: '/miner/hard',
+      component: Miner,
+      props: { options: Config.miner.hard }
+    },
+    {
+      name: 'Snake',
+      path: '/snake',
+      component: Snake,
+      props: { options: Config.snake }
+    },
+    {
+      name: 'Tetris',
+      path: '/tetris',
+      component: Tetris,
+      props: { options: Config.tetris }
+    },
+    {
+      name: 'Crush',
+      path: '/crush',
+      component: Crush,
+      props: { options: Config.crush }
     }
   ]
 })

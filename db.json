@@ -1,70 +1,13 @@
 {
-  "easy": [
-    {
-      "name": "B3P9L",
-      "time": 15
-    },
-    {
-      "name": "GmZJ4",
-      "time": 17
-    },
-    {
-      "name": "ATNvL",
-      "time": 20
-    },
-    {
-      "name": "DbNJq",
-      "time": 14
-    },
-    {
-      "name": "wDHTr",
-      "time": 19
-    },
-    {
-      "name": "VJFwU",
-      "time": 30
-    },
-    {
-      "name": "tJRWE",
-      "time": 12
-    },
-    {
-      "name": "JqQVZ",
-      "time": 15
-    },
-    {
-      "name": "wprBl",
-      "time": 25
-    },
-    {
-      "name": "Cyzai",
-      "time": 45
-    },
-    {
-      "name": "4Y1CI",
-      "time": 30
-    },
-    {
-      "name": "ntTjm",
-      "time": 23
-    },
-    {
-      "name": "SnQ0p",
-      "time": 44
-    },
-    {
-      "name": "SVI2X",
-      "time": 62
-    },
+  "miner_easy": [],
+  "miner_medium": [],
+  "miner_hard": [],
+  "tetris": [
     {
       "name": "qweqwe",
-      "time": 16
-    },
-    {
-      "name": "ggg",
-      "time": 70
+      "result": 2
     }
   ],
-  "medium": [],
-  "hard": []
+  "snake": [],
+  "crush": []
 }

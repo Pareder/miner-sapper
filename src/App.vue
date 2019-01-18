@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <div class="p-20">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -76,5 +78,8 @@ h2 {
 }
 .fade-enter {
   opacity: 0;
+}
+.p-20 {
+  padding: 20px;
 }
 </style>

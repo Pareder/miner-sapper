@@ -7,6 +7,16 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
+const zeroTime = (val) => {
+  return val > 9 ? val : '0' + val
+}
+
+Vue.prototype.formatTime = (val) => {
+  const minutes = Math.floor(val / 60)
+  const seconds = val - minutes * 60
+  return `${zeroTime(minutes)}:${zeroTime(seconds)}`
+}
+
 new Vue({
   router,
   render: h => h(App)
