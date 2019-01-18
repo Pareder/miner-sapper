@@ -60,7 +60,7 @@ app.post('/result', (req, res) => {
 
   console.log(leaderboard)
 
-  const topFive = leaderboard.slice(0, 5)
+  const topFive = mode.includes('miner') ? leaderboard.slice(0, 5) : leaderboard.slice(-5).reverse()
   const position = leaderboard.findIndex(item => item.name === name) + 1
 
   res.send({
