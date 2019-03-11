@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div class="p-20">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -40,6 +38,8 @@ h2 {
 
 .btn {
   margin-top: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
   width: 200px;
   height: 50px;
   position: relative;
@@ -54,9 +54,6 @@ h2 {
   letter-spacing: 2px;
   overflow: hidden;
   outline: none;
-}
-.btn + .btn {
-  margin-left: 20px;
 }
 .btn:before {
   content: '';

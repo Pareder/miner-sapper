@@ -15,7 +15,8 @@ db.defaults({
   miner_hard: [],
   tetris: [],
   snake: [],
-  crush: []
+  crush: [],
+  numbers: []
 })
   .write()
 
@@ -41,7 +42,6 @@ app.post('/result', (req, res) => {
   const result = req.body.result
   const mode = req.body.mode.split('/')
   const formattedMode = mode[1] + (mode[2] ? ('_' + mode[2]) : '')
-  console.log(formattedMode)
   
   /** Add new user time 
   * @param {String} mode Mode to add time to
@@ -58,14 +58,13 @@ app.post('/result', (req, res) => {
     .sortBy('result')
     .value()
 
-  console.log(leaderboard)
-
   const topFive = mode.includes('miner') ? leaderboard.slice(0, 5) : leaderboard.slice(-5).reverse()
   const position = leaderboard.findIndex(item => item.name === name) + 1
+  const finalPosition = mode.includes('miner') ? position : (leaderboard.length - position + 1)
 
   res.send({
     leaderboard: topFive,
-    position
+    position: finalPosition
   })
 })
 

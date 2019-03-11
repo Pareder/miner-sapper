@@ -13,7 +13,7 @@ const zeroTime = (val) => {
 
 Vue.prototype.formatTime = (val) => {
   const minutes = Math.floor(val / 60)
-  const seconds = val - minutes * 60
+  const seconds = (val - minutes * 60).toFixed(2)
   return `${zeroTime(minutes)}:${zeroTime(seconds)}`
 }
 

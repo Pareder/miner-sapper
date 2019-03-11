@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div>
-      <Modal v-if="victory" :time="spentTime" @restart="createField" />
+      <Modal v-if="victory" :result="spentTime" @restart="createField" />
       <div class="field">
         <div class="line" v-for="(line, id) in cells" :key="id">
           <div class="cell" v-for="(cell, idx) in line" :key="id + '' + idx" @click="cellClick(id, idx)" @contextmenu.prevent="cellRightClick(id, idx)" :class="cell && cell.clicked ? (cell.value === bomb ? 'bomb' : 'opened') : (cell && cell.rightClicked ? 'flag' : '')">
@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     spentTime () {
-      return +((this.endTime - this.startTime) / 1000).toFixed(2)
+      return +((this.endTime - this.startTime) / 1000)
     }
   },
   created () {

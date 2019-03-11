@@ -54,8 +54,12 @@ export default {
   outline: none;
   transition: all 0.3s;
 }
+.name {
+  width: 100%;
+}
 .submit {
   width: 100px;
+  margin-left: 5px;
   background-color: #71B280;
   color: #fff;
   font-size: 20px;

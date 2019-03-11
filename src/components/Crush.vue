@@ -36,6 +36,7 @@ export default {
   methods: {
     initData () {
       this.finish = false
+      this.score = 0
       this.cells = []
       for (let i = 0; i < this.size; i++) {
         this.cells[i] = []
@@ -60,6 +61,7 @@ export default {
 
       this.moveDown(sameColor)
       this.calcScore(sameColor.length)
+      this.checkColumn()
       this.setCells(i)
       this.checkFinish()
     },
@@ -112,6 +114,21 @@ export default {
         }
       }
     },
+    checkColumn () {
+      for (let j = 0; j < this.size - 1; j++) {
+        if (this.cells.every(item => item[j] === this.emptyColor)) {
+          this.moveColumn(j)
+        }
+      }
+    },
+    moveColumn (emptyColumn) {
+      for (let j = emptyColumn; j < this.size - 1; j++) {
+        for (let i = 0; i < this.size; i++) {
+          this.cells[i][j] = this.cells[i][j + 1]
+          this.cells[i][j + 1] = this.emptyColor
+        }
+      }
+    },
     calcScore (length) {
       this.score += 2 * length * Math.ceil(length / 10)
     },
@@ -144,8 +161,10 @@ export default {
 .cell {
   width: 3vw;
   max-width: 30px;
+  min-width: 18px;
   height: 3vw;
   max-height: 30px;
+  min-height: 18px;
   padding: 2px;
   position: relative;
 }
@@ -156,7 +175,7 @@ export default {
   box-shadow: -1px -1px 0 1px rgba(0, 0, 0, 0.7) inset;
 }
 .red {
-  background: linear-gradient(45deg, #ff512f, #dd2476);
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
 }
 .green {
   background: linear-gradient(45deg, #4bfd39, #12fff7);

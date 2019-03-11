@@ -6,6 +6,7 @@ import Miner from '../components/Miner'
 import Snake from '../components/Snake'
 import Tetris from '../components/Tetris'
 import Crush from '../components/Crush'
+import Numbers from '../components/Numbers'
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ const router = new Router({
       path: '/crush',
       component: Crush,
       props: { options: Config.crush }
+    },
+    {
+      name: 'Numbers',
+      path: '/numbers',
+      component: Numbers,
+      props: { options: Config.numbers }
     }
   ]
 })

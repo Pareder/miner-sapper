@@ -1,5 +1,10 @@
 {
-  "miner_easy": [],
+  "miner_easy": [
+    {
+      "name": "asdasd",
+      "result": 19.76
+    }
+  ],
   "miner_medium": [],
   "miner_hard": [],
   "tetris": [
@@ -9,5 +14,6 @@
     }
   ],
   "snake": [],
-  "crush": []
+  "crush": [],
+  "numbers": []
 }

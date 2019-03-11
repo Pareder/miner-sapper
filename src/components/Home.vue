@@ -1,14 +1,37 @@
 <template>
-  <div class="buttons">
-    <h1>Miner v.1.23.913.R.111</h1>
-    <router-link to="/miner/easy" tag="button" class="btn">Easy</router-link>
-    <router-link to="/miner/medium" tag="button" class="btn">Medium</router-link>
-    <router-link to="/miner/hard" tag="button" class="btn">Hard</router-link>
-    <router-link to="/snake" tag="button" class="btn">Snake</router-link>
-    <router-link to="/tetris" tag="button" class="btn">Tetris</router-link>
-    <router-link to="/crush" tag="button" class="btn">Crush</router-link>
+  <div>
+    <DifficultyModal v-if="minerClicked" @close="closeMinerModal" />
+    <h1>Simple Classic Games</h1>
+    <div class="buttons">
+      <button type="button" class="btn" @click="openMinerModal">Minesweeper</button>
+      <router-link to="/tetris" tag="button" class="btn">Tetris</router-link>
+      <router-link to="/crush" tag="button" class="btn">Crush</router-link>
+      <router-link to="/numbers" tag="button" class="btn">2048</router-link>
+    </div>
   </div>
 </template>
+<script>
+import DifficultyModal from './DifficultyModal'
+
+export default {
+  data () {
+    return {
+      minerClicked: false
+    }
+  },
+  methods: {
+    openMinerModal () {
+      this.minerClicked = true
+    },
+    closeMinerModal () {
+      this.minerClicked = false
+    }
+  },
+  components: {
+    DifficultyModal
+  }
+}
+</script>
 <style scoped>
 h1 {
   color: #fff;

@@ -21,7 +21,9 @@ export default {
       code: null,
       bonus: null,
       arrowPressed: false,
-      lose: false
+      lose: false,
+      xDown: null,
+      yDown: null
     }
   },
   props: {
@@ -36,6 +38,8 @@ export default {
   methods: {
     setKeyEventHandler () {
       window.addEventListener('keydown', this.onKeyDown)
+      window.addEventListener('touchstart', this.handleTouchStart)
+      window.addEventListener('touchmove', this.handleTouchMove)
     },
     initData () {
       this.cells = new Array(this.size)
@@ -183,6 +187,42 @@ export default {
       this.checkIntersection()
       this.setCells(this.snake[0][0])
     },
+    handleTouchStart (e) {
+      const firstTouch = e.touches[0]
+      this.xDown = firstTouch.clientX
+      this.yDown = firstTouch.clientY
+    },
+    handleTouchMove (e) {
+      if (!this.xDown || !this.yDown) {
+        return
+      }
+
+      const xUp = e.touches[0].clientX
+      const yUp = e.touches[0].clientY
+
+      const xDiff = this.xDown - xUp
+      const yDiff = this.yDown - yUp
+
+      if (Math.abs(xDiff) > Math.abs(yDiff) && this.code !== this.arrowCodes[0] && this.code !== this.arrowCodes[2]) {
+        if (xDiff > 0) {
+          this.code = this.arrowCodes[0]
+        } else {
+          this.code = this.arrowCodes[2]
+        }
+      } else if (this.code !== this.arrowCodes[1] && this.code !== this.arrowCodes[3]) {
+        if (yDiff > 0) {
+          this.code = this.arrowCodes[1]
+        } else {
+          this.code = this.arrowCodes[3]
+        }
+      }
+
+      this.arrowPressed = true
+      this.checkIntersection()
+      this.setCells(this.snake[0][0])
+      this.xDown = null
+      this.yDown = null
+    },
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     },
@@ -209,8 +249,10 @@ export default {
 .cell {
   width: 3vw;
   max-width: 30px;
+  min-width: 14px;
   height: 3vw;
   max-height: 30px;
+  min-height: 14px;
   position: relative;
   display: flex;
   justify-content: center;

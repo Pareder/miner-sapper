@@ -27,6 +27,7 @@ const rotateModel = (randomModel, rotatedModel, rotatedStatus) => {
     default:
       return false
   }
+
   return rotatedModel
 }
 
@@ -216,4 +217,4 @@ const rotateSeventhModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-export default rotateModel
+export { rotateModel }

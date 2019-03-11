@@ -12,7 +12,7 @@
           <Leaderboard v-else
             :leaderboard="leaderboard"
             :position="position"
-            :time="result"
+            :result="result"
             :name="name"
             @formatTime="formatTime"
           />
@@ -60,7 +60,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
+<style>
 .modal {
   position: fixed;
   top: 0;
@@ -85,17 +85,18 @@ export default {
   transform: translate(-50%, -50%);
   width: 100%;
   max-width: 400px;
+  max-height: 100vh;
   background-color: #fff;
   border-radius: 30px;
+  overflow-y: auto;
 }
 .modal__top {
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
 }
 .modal__body {
-  max-height: 100vh;
   padding: 20px 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 p {

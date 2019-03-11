@@ -26,12 +26,17 @@ export default {
     arrowCodes: ArrowCodes
   },
   tetris: {
-    size: [15, 10],
+    size: [20, 10],
     totalModels: 7,
     arrowCodes: ArrowCodes
   },
   crush: {
-    size: 15,
+    size: 16,
     colors: ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
+  },
+  numbers: {
+    size: 4,
+    arrowCodes: ArrowCodes,
+    startNumbersCount: 2
   }
 }
