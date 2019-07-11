@@ -13,6 +13,7 @@
 </template>
 <script>
 import Modal from './Modal'
+import { getRandomNumber, getCrushPositions } from '../helpers'
 
 export default {
   data () {
@@ -38,10 +39,12 @@ export default {
       this.finish = false
       this.score = 0
       this.cells = []
+
       for (let i = 0; i < this.size; i++) {
         this.cells[i] = []
+
         for (let j = 0; j < this.size; j++) {
-          this.cells[i][j] = this.colors[this.randomColor()]
+          this.cells[i][j] = this.colors[getRandomNumber(this.colors.length)]
         }
       }
     },
@@ -51,11 +54,12 @@ export default {
       }
 
       const oldVal = this.cells[i][j]
+      const sameColor = this.checkColor(i, j, oldVal)
       this.cells[i][j] = this.emptyColor
 
-      const sameColor = this.checkColor(i, j, oldVal)
       if (sameColor.length < 2) {
         this.cells[i][j] = oldVal
+
         return
       }
 
@@ -68,23 +72,24 @@ export default {
     checkColor (i, j, value, found) {
       const foundSame = found || []
       foundSame.push([i, j])
+      const positions = getCrushPositions(i, j)
 
-      const positions = this.positions(i, j)
       positions.map(position => {
         if (this.cells[position[0]] && this.cells[position[0]][position[1]] === value) {
           this.cells[position[0]][position[1]] = this.emptyColor
           this.checkColor(position[0], position[1], value, foundSame)
         }
       })
+
       return foundSame
     },
     checkFinish () {
       for (let i = 0; i < this.cells.length; i++) {
         for (let j = 0; j < this.cells[i].length; j++) {
-          const positions = this.positions(i, j)
-
+          const positions = getCrushPositions(i, j)
           const notFinished = positions.some(position => {
-            return this.cells[position[0]] && this.cells[i][j] !== this.emptyColor && this.cells[i][j] === this.cells[position[0]][position[1]]
+            return this.cells[position[0]] && this.cells[i][j] !== this.emptyColor &&
+              this.cells[i][j] === this.cells[position[0]][position[1]]
           })
 
           if (notFinished) {
@@ -107,6 +112,7 @@ export default {
               if (this.cells[k][j] !== this.emptyColor) {
                 this.cells[i][j] = this.cells[k][j]
                 this.cells[k][j] = this.emptyColor
+
                 break
               }
             }
@@ -134,12 +140,6 @@ export default {
     },
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
-    },
-    randomColor () {
-      return Math.floor(Math.random() * this.colors.length)
-    },
-    positions (i, j) {
-      return [[i - 1, j], [i, j - 1], [i, j + 1], [i + 1, j]]
     }
   },
   components: {

@@ -3,27 +3,13 @@ const path = require('path')
 const serveStatic = require('serve-static')
 const compression = require('compression')
 const bodyParser = require('body-parser')
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-
-/** DB settings */
-const adapter = new FileSync('db.json')
-const db = low(adapter)
-db.defaults({
-  miner_easy: [],
-  miner_medium: [],
-  miner_hard: [],
-  tetris: [],
-  snake: [],
-  crush: [],
-  numbers: []
-})
-  .write()
+const db = require('./db')
+const getRoutes = require('./routes')
 
 /** App settings */
 const app = express()
 app.use(compression())
-app.use(serveStatic((__dirname + "/dist"), {
+app.use(serveStatic(path.join(__dirname, '/dist'), {
   maxAge: 604800000,
   setHeaders: function (res, path) {
     res.setHeader('X-FRAME-OPTIONS', 'DENY')
@@ -35,38 +21,7 @@ app.use(serveStatic((__dirname + "/dist"), {
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-/** Query for setting new user time and getting top 5 */
-app.post('/result', (req, res) => {
-  const name = req.body.name
-  const result = req.body.result
-  const mode = req.body.mode.split('/')
-  const formattedMode = mode[1] + (mode[2] ? ('_' + mode[2]) : '')
-  
-  /** Add new user time 
-  * @param {String} mode Mode to add time to
-  */
-  db.get(formattedMode)
-    .push({
-      name,
-      result
-    })
-    .write()
-
-  /** Get results sorted by time */
-  const leaderboard = db.get(formattedMode)
-    .sortBy('result')
-    .value()
-
-  const topFive = mode.includes('miner') ? leaderboard.slice(0, 5) : leaderboard.slice(-5).reverse()
-  const position = leaderboard.findIndex(item => item.name === name) + 1
-  const finalPosition = mode.includes('miner') ? position : (leaderboard.length - position + 1)
-
-  res.send({
-    leaderboard: topFive,
-    position: finalPosition
-  })
-})
+app.use('/', getRoutes(db))
 
 /** Setting app port */
 const port = process.env.PORT || 5000

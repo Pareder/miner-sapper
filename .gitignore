@@ -18,4 +18,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-db.json
+db/db.json

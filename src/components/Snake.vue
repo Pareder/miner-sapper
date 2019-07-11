@@ -10,6 +10,7 @@
 </template>
 <script>
 import LoseModal from './LoseModal'
+import { getRandomNumber } from '../helpers'
 
 export default {
   data () {
@@ -43,6 +44,7 @@ export default {
     },
     initData () {
       this.cells = new Array(this.size)
+
       for (let i = 0; i < this.cells.length; i++) {
         this.cells[i] = new Array(this.size).fill(0)
       }
@@ -61,12 +63,14 @@ export default {
       this.code = Math.floor(Math.random() * (this.arrowCodes[3] - this.arrowCodes[0] + 1) + this.arrowCodes[0])
     },
     setSnake () {
-      const position = [this.randomNumber(), this.randomNumber()]
+      const position = [getRandomNumber(this.size), getRandomNumber(this.size)]
+
       if (position[0] < 2 || position[0] > this.size - 4 || position[1] < 2 || position[1] > this.size - 4) {
         this.setSnake()
       } else {
         this.snake = []
         this.snake.push(position)
+
         switch (this.code) {
           case this.arrowCodes[0]:
             this.snake.push([position[0], position[1] + 1])
@@ -88,7 +92,8 @@ export default {
       }
     },
     setBonus () {
-      const position = [this.randomNumber(), this.randomNumber()]
+      const position = [getRandomNumber(this.size), getRandomNumber(this.size)]
+
       if (this.snake.some(item => item[0] === position[0] && item[1] === position[1])) {
         this.setBonus()
       } else {
@@ -103,6 +108,7 @@ export default {
     },
     moveSnake () {
       const lastPos = this.snake[this.snake.length - 1]
+
       for (let i = this.snake.length - 1; i >= 0; i--) {
         if (i === 0) {
           switch (this.code) {
@@ -179,9 +185,11 @@ export default {
     },
     onKeyDown (e) {
       // The number 2 is the difference between two opposite arrows
-      if (this.code === e.keyCode || this.code === e.keyCode + 2 || this.code === e.keyCode - 2 || this.arrowPressed || !this.arrowCodes.includes(e.keyCode)) {
+      if (this.code === e.keyCode || this.code === e.keyCode + 2 || this.code === e.keyCode - 2 ||
+        this.arrowPressed || !this.arrowCodes.includes(e.keyCode)) {
         return
       }
+
       this.arrowPressed = true
       this.code = e.keyCode
       this.checkIntersection()
@@ -225,9 +233,6 @@ export default {
     },
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
-    },
-    randomNumber () {
-      return Math.floor(Math.random() * this.size)
     }
   },
   components: {

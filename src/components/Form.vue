@@ -43,9 +43,6 @@ export default {
 .form label {
   font-size: 18px;
 }
-.text--green {
-  color: #71B280;
-}
 .form input {
   height: 50px;
   padding: 0 20px;

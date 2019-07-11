@@ -1,4 +1,71 @@
-const rotateModel = (randomModel, rotatedModel, rotatedStatus) => {
+const randomizeModel = (size, fixedRandom) => {
+  switch (fixedRandom) {
+    // ---- model
+    case 1:
+      return [
+        [0, Math.floor(size / 2) - 2],
+        [0, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2)],
+        [0, Math.floor(size / 2) + 1]
+      ]
+    // ▄ model
+    case 2:
+      return [
+        [1, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2)],
+        [1, Math.floor(size / 2)]
+      ]
+    // ┴ model
+    case 3:
+      return [
+        [1, Math.floor(size / 2) - 2],
+        [1, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2) - 1],
+        [1, Math.floor(size / 2)]
+      ]
+    // _┌ model
+    case 4:
+      return [
+        [1, Math.floor(size / 2) - 2],
+        [1, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2)]
+      ]
+    // ¬_ model
+    case 5:
+      return [
+        [0, Math.floor(size / 2) - 2],
+        [0, Math.floor(size / 2) - 1],
+        [1, Math.floor(size / 2) - 1],
+        [1, Math.floor(size / 2)]
+      ]
+    // ┌ model
+    case 6:
+      return [
+        [2, Math.floor(size / 2) - 1],
+        [1, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2) - 1],
+        [0, Math.floor(size / 2)]
+      ]
+    // ┐ model
+    case 7:
+      return [
+        [2, Math.floor(size / 2)],
+        [1, Math.floor(size / 2)],
+        [0, Math.floor(size / 2)],
+        [0, Math.floor(size / 2) - 1]
+      ]
+  }
+}
+
+const rotateModel = (randomModel, model, rotatedStatus) => {
+  let rotatedModel = []
+
+  for (let i = 0; i < model.length; i++) {
+    rotatedModel[i] = [...model[i]]
+  }
+
   switch (randomModel) {
     // ---- model
     case 1:
@@ -217,4 +284,98 @@ const rotateSeventhModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-export { rotateModel }
+const getRandomNumber = range => {
+  return Math.floor(Math.random() * range)
+}
+
+const getCrushPositions = (i, j) => {
+  return [[i - 1, j], [i, j - 1], [i, j + 1], [i + 1, j]]
+}
+
+const getMinerPositions = (i, j) => {
+  return [[i - 1, j - 1], [i - 1, j], [i - 1, j + 1], [i, j - 1], [i, j + 1], [i + 1, j - 1], [i + 1, j], [i + 1, j + 1]]
+}
+
+const cellBackgroundColor = (value) => {
+  switch (value) {
+    case 2:
+      return '#e2efe5'
+    case 4:
+      return '#d4e7d8'
+    case 8:
+      return '#c6e0cc'
+    case 16:
+      return '#b8d8bf'
+    case 32:
+      return '#a9d0b2'
+    case 64:
+      return '#9bc9a6'
+    case 128:
+      return '#8dc199'
+    case 256:
+      return '#7fb98c'
+    case 512:
+      return '#134e5e'
+    case 1024:
+      return '#114654'
+    case 2048:
+      return '#0f3e4b'
+    case 4096:
+      return '#0d3641'
+    default:
+      return '#a0b8be'
+  }
+}
+
+const cellColor = (value) => {
+  return value < 256 ? '#776E65' : '#fff'
+}
+
+const getRandomColor = () => {
+  const bgColor = [113, 178, 128]
+  const randomColor = [
+    Math.floor(Math.random() * 255),
+    Math.floor(Math.random() * 255),
+    Math.floor(Math.random() * 255)
+  ]
+
+  if (contrast(randomColor, bgColor) < 3) {
+    return getRandomColor()
+  }
+
+  return `rgb(${randomColor[0]},${randomColor[1]},${randomColor[2]})`
+}
+
+const luminanace = rgb => {
+  const a = rgb.map(color => {
+    color /= 255
+    return color <= 0.03928 ? color / 12.92 : Math.pow((color + 0.055) / 1.055, 2.4)
+  })
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
+}
+
+const contrast = (rgb1, rgb2) => {
+  const luminanceFirst = luminanace(rgb1) + 0.05
+  const luminanceSecond = luminanace(rgb2) + 0.05
+
+  if (luminanceFirst > luminanceSecond) {
+    return luminanceFirst / luminanceSecond
+  }
+  return luminanceSecond / luminanceFirst
+}
+
+const lightenColor = (color) => {
+  return `rgba${color.slice(3, -1)}, 0.8)`
+}
+
+export {
+  randomizeModel,
+  rotateModel,
+  getRandomNumber,
+  getCrushPositions,
+  getMinerPositions,
+  cellBackgroundColor,
+  cellColor,
+  getRandomColor,
+  lightenColor
+}

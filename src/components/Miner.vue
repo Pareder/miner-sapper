@@ -4,7 +4,16 @@
       <Modal v-if="victory" :result="spentTime" @restart="createField" />
       <div class="field">
         <div class="line" v-for="(line, id) in cells" :key="id">
-          <div class="cell" v-for="(cell, idx) in line" :key="id + '' + idx" @click="cellClick(id, idx)" @contextmenu.prevent="cellRightClick(id, idx)" :class="cell && cell.clicked ? (cell.value === bomb ? 'bomb' : 'opened') : (cell && cell.rightClicked ? 'flag' : '')">
+          <div
+            class="cell"
+            v-for="(cell, idx) in line"
+            :key="id + '' + idx"
+            @click="cellClick(id, idx)"
+            @contextmenu.prevent="cellRightClick(id, idx)"
+            :class="cell && cell.clicked ?
+              (cell.value === bomb ? 'bomb' : 'opened') :
+              (cell && cell.rightClicked ? 'flag' : '')"
+          >
             <span v-if="cell && cell.clicked && ([bomb, 0].indexOf(cell.value) === -1)">{{ cell.value }}</span>
           </div>
         </div>
@@ -15,6 +24,7 @@
 </template>
 <script>
 import Modal from './Modal'
+import { getRandomNumber, getMinerPositions } from '../helpers'
 
 export default {
   data () {
@@ -53,17 +63,22 @@ export default {
       this.startTime = null
       this.endTime = null
       this.cells = Array(this.size)
+
       for (let i = 0; i < this.size; i++) {
         this.cells[i] = Array(this.size)
       }
     },
     setBombsPosition () {
       let bombsSet = 0
+
       while (bombsSet < this.bombsCount) {
-        const randomPosition = [this.randomNumber(), this.randomNumber()]
-        if (this.cells[randomPosition[0]][randomPosition[1]] && this.cells[randomPosition[0]][randomPosition[1]].value === this.bomb) {
+        const randomPosition = [getRandomNumber(this.size), getRandomNumber(this.size)]
+
+        if (this.cells[randomPosition[0]][randomPosition[1]] &&
+          this.cells[randomPosition[0]][randomPosition[1]].value === this.bomb) {
           continue
         }
+
         bombsSet++
         this.cells[randomPosition[0]][randomPosition[1]] = {
           value: this.bomb,
@@ -89,16 +104,15 @@ export default {
     },
     checkBombs (i, j) {
       let bombsFound = 0
-      const positions = this.positions(i, j)
+      const positions = getMinerPositions(i, j)
       positions.map(position => {
-        if (this.cells[position[0]] && this.cells[position[0]][position[1]] && this.cells[position[0]][position[1]].value === this.bomb) {
+        if (this.cells[position[0]] && this.cells[position[0]][position[1]] &&
+          this.cells[position[0]][position[1]].value === this.bomb) {
           bombsFound++
         }
       })
+
       return bombsFound
-    },
-    randomNumber () {
-      return Math.floor(Math.random() * this.size)
     },
     cellClick (i, j) {
       if (!this.startTime) {
@@ -114,8 +128,7 @@ export default {
       }
 
       this.setCells(i, j, 'clicked', true)
-
-      this.checkFinish(i, j)
+      this.checkFinish()
       this.checkBomb(i, j)
     },
     cellRightClick (i, j) {
@@ -130,8 +143,9 @@ export default {
       this.$set(this.cells[i], j, this.cells[i][j])
       this.$set(this.cells, i, this.cells[i])
     },
-    checkFinish (i, j) {
+    checkFinish () {
       const finish = this.cells.every(line => line.every(cell => cell.clicked || cell.value === this.bomb))
+
       if (finish) {
         this.endTime = Date.now()
         this.finish = true
@@ -141,6 +155,7 @@ export default {
     checkBomb (i, j) {
       if (this.cells[i][j].value === this.bomb) {
         this.finish = true
+
         for (let i = 0; i < this.cells.length; i++) {
           for (let j = 0; j < this.cells[i].length; j++) {
             if (this.cells[i][j].value === this.bomb) {
@@ -151,18 +166,17 @@ export default {
       }
     },
     discardZeros (i, j) {
-      const positions = this.positions(i, j)
+      const positions = getMinerPositions(i, j)
       positions.map(position => {
-        if (this.cells[position[0]] && this.cells[position[0]][position[1]] && !this.cells[position[0]][position[1]].clicked) {
+        if (this.cells[position[0]] && this.cells[position[0]][position[1]] &&
+          !this.cells[position[0]][position[1]].clicked) {
           this.cells[position[0]][position[1]].clicked = true
+
           if (this.cells[position[0]][position[1]].value === 0) {
             this.discardZeros(position[0], position[1])
           }
         }
       })
-    },
-    positions (i, j) {
-      return [[i - 1, j - 1], [i - 1, j], [i - 1, j + 1], [i, j - 1], [i, j + 1], [i + 1, j - 1], [i + 1, j], [i + 1, j + 1]]
     }
   },
   components: {

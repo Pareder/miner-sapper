@@ -1,9 +1,9 @@
 <template>
   <div>
-    <DifficultyModal v-if="minerClicked" @close="closeMinerModal" />
+    <DifficultyModal v-if="minerClicked" @close="toggleMinerModal" />
     <h1>Simple Classic Games</h1>
     <div class="buttons">
-      <button type="button" class="btn" @click="openMinerModal">Minesweeper</button>
+      <button type="button" class="btn" @click="toggleMinerModal">Minesweeper</button>
       <router-link to="/tetris" tag="button" class="btn">Tetris</router-link>
       <router-link to="/snake" tag="button" class="btn">Snake</router-link>
       <router-link to="/crush" tag="button" class="btn">Crush</router-link>
@@ -21,11 +21,8 @@ export default {
     }
   },
   methods: {
-    openMinerModal () {
-      this.minerClicked = true
-    },
-    closeMinerModal () {
-      this.minerClicked = false
+    toggleMinerModal () {
+      this.minerClicked = !this.minerClicked
     }
   },
   components: {

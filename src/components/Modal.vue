@@ -7,14 +7,15 @@
           <h2>Good job!</h2>
         </div>
         <div class="modal__body">
-          <p>Enter your name to post the result <span class="text--green text--bold">{{ $route.path.includes('miner') ? formatTime(result) : result }}</span></p>
+          <p>Enter your name to post the result <span class="text--green text--bold">
+            {{ $route.path.includes('miner') ? formatTime(result) : result }}
+          </span></p>
           <Form v-if="!leaderboard" :sendingError="sendingError" @submitForm="getLeaderboard" />
           <Leaderboard v-else
             :leaderboard="leaderboard"
             :position="position"
             :result="result"
             :name="name"
-            @formatTime="formatTime"
           />
           <button type="button" class="btn" @click="$emit('restart')">Restart</button>
         </div>
@@ -25,6 +26,7 @@
 <script>
 import Form from './Form'
 import Leaderboard from './Leaderboard'
+import API from '../api'
 
 export default {
   data () {
@@ -40,18 +42,26 @@ export default {
       type: Number
     }
   },
+  created () {
+    this._api = API.createFrom()
+  },
   methods: {
-    getLeaderboard (name) {
+    async getLeaderboard (name) {
       this.name = name
-      this.$http.post('/result', { name: this.name, result: this.result, mode: this.$route.path })
-        .then((data) => {
-          this.sendingError = false
-          this.leaderboard = data.body.leaderboard
-          this.position = data.body.position
-        }, err => {
-          this.sendingError = true
-          console.log(err.statusText)
+
+      try {
+        const data = await this._api.getLeaderboard({
+          name,
+          result: this.result,
+          mode: this.$route.path
         })
+
+        this.sendingError = false
+        this.leaderboard = data.leaderboard
+        this.position = data.position
+      } catch (e) {
+        this.sendingError = true
+      }
     }
   },
   components: {

@@ -3,7 +3,12 @@
     <h1>Score: {{ score }}</h1>
     <div class="field">
       <div class="line" v-for="(line, id) in cells" :key="id">
-        <div class="cell" v-for="(cell, idx) in line" :key="id + '' + idx" :style="`background-color: ${ cellBackgroundColor(cell.value) }; color: ${ cellColor(cell.value) }`">
+        <div
+          class="cell"
+          v-for="(cell, idx) in line"
+          :key="id + '' + idx"
+          :style="`background-color: ${ cellBackgroundColor(cell.value) }; color: ${ cellColor(cell.value) }`"
+        >
           {{ cell.value }}
         </div>
       </div>
@@ -13,12 +18,13 @@
 </template>
 <script>
 import Modal from './Modal'
+import { getRandomNumber, cellBackgroundColor, cellColor } from '../helpers'
 
 export default {
   data () {
     return {
       cells: [],
-      cekkChanged: false,
+      cellChanged: false,
       finish: false,
       score: 0
     }
@@ -39,6 +45,7 @@ export default {
 
       for (let i = 0; i < this.options.size; i++) {
         this.cells[i] = []
+
         for (let j = 0; j < this.options.size; j++) {
           this.cells[i][j] = { value: null }
         }
@@ -53,7 +60,7 @@ export default {
       }
     },
     randomCell () {
-      const position = [this.randomNumber(), this.randomNumber()]
+      const position = [getRandomNumber(this.options.size), getRandomNumber(this.options.size)]
 
       if (!this.cells[position[0]][position[1]].value) {
         this.cells[position[0]][position[1]].value = this.randomValue()
@@ -102,6 +109,7 @@ export default {
         for (let j = 0; j < this.options.size - 1; j++) {
           for (let k = j + 1; k < this.options.size; k++) {
             const finish = this.checkCells([i, j], [i, k])
+
             if (finish) {
               break
             }
@@ -118,6 +126,7 @@ export default {
         for (let i = 0; i < this.options.size - 1; i++) {
           for (let k = i + 1; k < this.options.size; k++) {
             const finish = this.checkCells([i, j], [k, j])
+
             if (finish) {
               break
             }
@@ -134,6 +143,7 @@ export default {
         for (let j = this.options.size - 1; j > 0; j--) {
           for (let k = j - 1; k >= 0; k--) {
             const finish = this.checkCells([i, j], [i, k])
+
             if (finish) {
               break
             }
@@ -150,6 +160,7 @@ export default {
         for (let i = this.options.size - 1; i > 0; i--) {
           for (let k = i - 1; k >= 0; k--) {
             const finish = this.checkCells([i, j], [k, j])
+
             if (finish) {
               break
             }
@@ -164,11 +175,13 @@ export default {
         this.cells[cell1[0]][cell1[1]].value = this.cells[cell2[0]][cell2[1]].value
         this.cells[cell2[0]][cell2[1]].value = null
         this.cellChanged = true
-      } else if (this.cells[cell1[0]][cell1[1]].value && this.cells[cell1[0]][cell1[1]].value === this.cells[cell2[0]][cell2[1]].value) {
+      } else if (this.cells[cell1[0]][cell1[1]].value &&
+        this.cells[cell1[0]][cell1[1]].value === this.cells[cell2[0]][cell2[1]].value) {
         this.cells[cell1[0]][cell1[1]].value *= 2
         this.cells[cell2[0]][cell2[1]].value = null
         this.cellChanged = true
         this.score += this.cells[cell1[0]][cell1[1]].value
+
         return true
       } else if (this.cells[cell1[0]][cell1[1]].value && this.cells[cell2[0]][cell2[1]].value) {
         return true
@@ -177,42 +190,8 @@ export default {
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     },
-    cellBackgroundColor (value) {
-      switch (value) {
-        case 2:
-          return '#e2efe5'
-        case 4:
-          return '#d4e7d8'
-        case 8:
-          return '#c6e0cc'
-        case 16:
-          return '#b8d8bf'
-        case 32:
-          return '#a9d0b2'
-        case 64:
-          return '#9bc9a6'
-        case 128:
-          return '#8dc199'
-        case 256:
-          return '#7fb98c'
-        case 512:
-          return '#134e5e'
-        case 1024:
-          return '#114654'
-        case 2048:
-          return '#0f3e4b'
-        case 4096:
-          return '#0d3641'
-        default:
-          return '#a0b8be'
-      }
-    },
-    cellColor (value) {
-      return value < 256 ? '#776E65' : '#fff'
-    },
-    randomNumber () {
-      return Math.floor(Math.random() * this.options.size)
-    },
+    cellColor: cellColor,
+    cellBackgroundColor: cellBackgroundColor,
     randomValue () {
       return Math.random() > 0.95 ? 4 : 2
     }

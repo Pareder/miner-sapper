@@ -4,12 +4,26 @@
     <div class="game">
       <div ref="field" class="field">
         <div class="line" v-for="(line, id) in cells" :key="id">
-          <div class="cell" v-for="(cell, idx) in line" :key="id + '' + idx" :style="cell && cell.value ? `background-color: ${lighten(cell.color)}; border: 1px solid ${cell.color}` : ''"></div>
+          <div
+            class="cell"
+            v-for="(cell, idx) in line"
+            :key="id + '' + idx"
+            :style="cell && cell.value ?
+              `background-color: ${lighten(cell.color)}; border: 1px solid ${cell.color}`:
+              ''"
+          ></div>
         </div>
       </div>
       <div class="next_model">
-        <div class="line" v-for="(line, id) in 3" :key="id">
-          <div class="cell" v-for="(cell, idx) in 4" :key="id + '' + idx" :style="checkNext(id, idx) ? `background-color: ${lighten(nextModel.color)}; border: 1px solid ${nextModel.color}` : ''"></div>
+        <div class="line" v-for="line in 3" :key="line">
+          <div
+            class="cell"
+            v-for="cell in 4"
+            :key="`${line}_${cell}`"
+            :style="checkNext(line - 1, cell - 1) ?
+              `background-color: ${lighten(nextModel.color)}; border: 1px solid ${nextModel.color}` :
+              ''"
+          ></div>
         </div>
       </div>
     </div>
@@ -17,7 +31,7 @@
   </div>
 </template>
 <script>
-import { rotateModel as rotateModelHelper } from '../helpers'
+import { randomizeModel, rotateModel as rotateModelHelper, getRandomColor, lightenColor } from '../helpers'
 import Modal from './Modal'
 
 export default {
@@ -59,6 +73,7 @@ export default {
       this.startTime = null
       this.endTime = null
       this.cells = new Array(this.size[0])
+
       for (let i = 0; i < this.cells.length; i++) {
         this.cells[i] = new Array(this.size[1]).fill({ value: 0 })
       }
@@ -142,14 +157,16 @@ export default {
       }
     },
     rightMovement () {
-      if (this.currentModel.model.every(item => (item[1] < this.size[1] - 1 && this.cells[item[0]][item[1] + 1].value !== 'set'))) {
+      if (this.currentModel.model.every(item => (item[1] < this.size[1] - 1 &&
+        this.cells[item[0]][item[1] + 1].value !== 'set'))) {
         this.currentModel.model.map(item => {
           item[1]++
         })
       }
     },
     downMovement () {
-      if (this.currentModel.model.some(item => (item[0] === this.size[0] - 1 || this.cells[item[0] + 1][item[1]].value === 'set'))) {
+      if (this.currentModel.model.some(item => (item[0] === this.size[0] - 1 ||
+        this.cells[item[0] + 1][item[1]].value === 'set'))) {
         this.setModel()
         this.buildModel()
         return
@@ -176,14 +193,13 @@ export default {
     buildModel () {
       this.randomModel = this.randomNextModel || Math.ceil(Math.random() * this.options.totalModels)
       this.randomNextModel = Math.ceil(Math.random() * this.options.totalModels)
-
       this.currentModel = this.nextModel || {
-        color: this.randomColor(),
-        model: this.randomizeModel(this.randomModel)
+        color: getRandomColor(),
+        model: randomizeModel(this.options.size[1], this.randomModel)
       }
       this.nextModel = {
-        color: this.randomColor(),
-        model: this.randomizeModel(this.randomNextModel)
+        color: getRandomColor(),
+        model: randomizeModel(this.options.size[1], this.randomNextModel)
       }
 
       if (this.currentModel.model.some(item => this.cells[item[0]][item[1]].value === 'set')) {
@@ -192,32 +208,8 @@ export default {
         this.timeout = null
         this.lose = true
         this.setKeyEventHandler()
+
         return true
-      }
-    },
-    randomizeModel (fixedRandom) {
-      switch (fixedRandom) {
-        // ---- model
-        case 1:
-          return [[0, Math.floor(this.options.size[1] / 2) - 2], [0, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2)], [0, Math.floor(this.options.size[1] / 2) + 1]]
-        // ▄ model
-        case 2:
-          return [[1, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2)], [1, Math.floor(this.options.size[1] / 2)]]
-        // ┴ model
-        case 3:
-          return [[1, Math.floor(this.options.size[1] / 2) - 2], [1, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2) - 1], [1, Math.floor(this.options.size[1] / 2)]]
-        // _┌ model
-        case 4:
-          return [[1, Math.floor(this.options.size[1] / 2) - 2], [1, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2)]]
-        // ¬_ model
-        case 5:
-          return [[0, Math.floor(this.options.size[1] / 2) - 2], [0, Math.floor(this.options.size[1] / 2) - 1], [1, Math.floor(this.options.size[1] / 2) - 1], [1, Math.floor(this.options.size[1] / 2)]]
-        // ┌ model
-        case 6:
-          return [[2, Math.floor(this.options.size[1] / 2) - 1], [1, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2) - 1], [0, Math.floor(this.options.size[1] / 2)]]
-        // ┐ model
-        case 7:
-          return [[2, Math.floor(this.options.size[1] / 2)], [1, Math.floor(this.options.size[1] / 2)], [0, Math.floor(this.options.size[1] / 2)], [0, Math.floor(this.options.size[1] / 2) - 1]]
       }
     },
     moveModel () {
@@ -255,16 +247,12 @@ export default {
           value: 'set'
         }
       })
+
       this.checkFullLine()
     },
     rotateModel () {
-      let rotatedModel = []
-      for (let i = 0; i < this.currentModel.model.length; i++) {
-        rotatedModel[i] = [...this.currentModel.model[i]]
-      }
-      let rotatedStatus = this.currentModel.rotated || 0
-
-      rotatedModel = rotateModelHelper(this.randomModel, rotatedModel, rotatedStatus)
+      const rotatedStatus = this.currentModel.rotated || 0
+      const rotatedModel = rotateModelHelper(this.randomModel, this.currentModel.model, rotatedStatus)
 
       if (rotatedModel) {
         if (rotatedModel.rotatedModel.some(item => item[1] < 0)) {
@@ -322,33 +310,7 @@ export default {
     checkNext (id, idx) {
       return this.nextModel.model.some(item => item[0] === id && item[1] === idx + (this.options.size[1] / 2 - 2))
     },
-    randomColor () {
-      const bgColor = [113, 178, 128]
-      const randomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
-      if (this.contrast(randomColor, bgColor) < 3) {
-        return this.randomColor()
-      }
-      return `rgb(${randomColor[0]},${randomColor[1]},${randomColor[2]})`
-    },
-    luminanace (rgb) {
-      const a = rgb.map(color => {
-        color /= 255
-        return color <= 0.03928 ? color / 12.92 : Math.pow((color + 0.055) / 1.055, 2.4)
-      })
-      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
-    },
-    contrast (rgb1, rgb2) {
-      const luminanceFirst = this.luminanace(rgb1) + 0.05
-      const luminanceSecond = this.luminanace(rgb2) + 0.05
-
-      if (luminanceFirst > luminanceSecond) {
-        return luminanceFirst / luminanceSecond
-      }
-      return luminanceSecond / luminanceFirst
-    },
-    lighten (color) {
-      return `rgba${color.slice(3, -1)}, 0.8)`
-    }
+    lighten: lightenColor
   },
   components: {
     Modal
