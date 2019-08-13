@@ -5,11 +5,11 @@ class API {
     this._http = http
   }
 
-  static createFrom () {
+  static create () {
     return new API(Vue.http)
   }
 
-  async getLeaderboard ({ name, result, mode }) {
+  async getLeaderboard ({ name, result, mode } = {}) {
     const data = await this._http.post('/result', { name, result, mode })
 
     return data.body

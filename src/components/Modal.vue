@@ -43,7 +43,7 @@ export default {
     }
   },
   created () {
-    this._api = API.createFrom()
+    this._api = API.create()
   },
   methods: {
     async getLeaderboard (name) {
