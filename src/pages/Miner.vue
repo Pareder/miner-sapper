@@ -23,7 +23,7 @@
   </transition>
 </template>
 <script>
-import Modal from './Modal'
+import Modal from '../components/Modal'
 import { getRandomNumber, getMinerPositions } from '../helpers'
 
 export default {

@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import LoseModal from './LoseModal'
+import LoseModal from '../components/LoseModal'
 import { getRandomNumber } from '../helpers'
 
 export default {

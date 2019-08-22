@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import Modal from './Modal'
+import Modal from '../components/Modal'
 import { getRandomNumber, getCrushPositions } from '../helpers'
 
 export default {

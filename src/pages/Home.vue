@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import DifficultyModal from './DifficultyModal'
+import DifficultyModal from '../components/DifficultyModal'
 
 export default {
   data () {

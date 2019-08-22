@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import Modal from './Modal'
+import Modal from '../components/Modal'
 import { getRandomNumber, cellBackgroundColor, cellColor } from '../helpers'
 
 export default {

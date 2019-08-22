@@ -32,7 +32,7 @@
 </template>
 <script>
 import { randomizeModel, rotateModel as rotateModelHelper, getRandomColor, lightenColor } from '../helpers'
-import Modal from './Modal'
+import Modal from '../components/Modal'
 
 export default {
   data () {
