@@ -1,4 +1,6 @@
 const randomizeModel = (size, fixedRandom) => {
+  fixedRandom = Number(fixedRandom)
+
   switch (fixedRandom) {
     // ---- model
     case 1:
@@ -60,6 +62,7 @@ const randomizeModel = (size, fixedRandom) => {
 }
 
 const rotateModel = (randomModel, model, rotatedStatus) => {
+  randomModel = Number(randomModel)
   let rotatedModel = []
 
   for (let i = 0; i < model.length; i++) {
@@ -89,7 +92,7 @@ const rotateModel = (randomModel, model, rotatedStatus) => {
       break
     // ┐ model
     case 7:
-      rotatedModel = rotateSeventhModel(rotatedModel, rotatedStatus, rotatedStatus)
+      rotatedModel = rotateSeventhModel(rotatedModel, rotatedStatus)
       break
     default:
       return false
@@ -289,14 +292,28 @@ const getRandomNumber = range => {
 }
 
 const getCrushPositions = (i, j) => {
-  return [[i - 1, j], [i, j - 1], [i, j + 1], [i + 1, j]]
+  return [
+    [i - 1, j],
+    [i, j - 1],
+    [i, j + 1],
+    [i + 1, j]
+  ]
 }
 
 const getMinerPositions = (i, j) => {
-  return [[i - 1, j - 1], [i - 1, j], [i - 1, j + 1], [i, j - 1], [i, j + 1], [i + 1, j - 1], [i + 1, j], [i + 1, j + 1]]
+  return [
+    [i - 1, j - 1],
+    [i - 1, j],
+    [i - 1, j + 1],
+    [i, j - 1],
+    [i, j + 1],
+    [i + 1, j - 1],
+    [i + 1, j],
+    [i + 1, j + 1]
+  ]
 }
 
-const cellBackgroundColor = (value) => {
+const cellBackgroundColor = value => {
   switch (value) {
     case 2:
       return '#e2efe5'
@@ -327,7 +344,7 @@ const cellBackgroundColor = (value) => {
   }
 }
 
-const cellColor = (value) => {
+const cellColor = value => {
   return value < 256 ? '#776E65' : '#fff'
 }
 
@@ -364,8 +381,8 @@ const contrast = (rgb1, rgb2) => {
   return luminanceSecond / luminanceFirst
 }
 
-const lightenColor = (color) => {
-  return `rgba${color.slice(3, -1)}, 0.8)`
+const lightenColor = (color, opacity = 0.8) => {
+  return `rgba${color.slice(3, -1)}, ${opacity})`
 }
 
 export {
