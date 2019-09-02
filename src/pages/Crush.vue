@@ -11,6 +11,7 @@
     <Modal v-if="finish" :result="score" @restart="initData" />
   </div>
 </template>
+
 <script>
 import Modal from '../components/Modal'
 import { getRandomNumber, getCrushPositions } from '../helpers'
@@ -26,14 +27,17 @@ export default {
       finish: false
     }
   },
+
   props: {
     options: {
       type: Object
     }
   },
+
   created () {
     this.initData()
   },
+
   methods: {
     initData () {
       this.finish = false
@@ -48,6 +52,7 @@ export default {
         }
       }
     },
+
     onCellClick (i, j) {
       if (this.cells[i][j] === this.emptyColor) {
         return
@@ -69,6 +74,7 @@ export default {
       this.setCells(i)
       this.checkFinish()
     },
+
     checkColor (i, j, value, found) {
       const foundSame = found || []
       foundSame.push([i, j])
@@ -83,6 +89,7 @@ export default {
 
       return foundSame
     },
+
     checkFinish () {
       for (let i = 0; i < this.cells.length; i++) {
         for (let j = 0; j < this.cells[i].length; j++) {
@@ -100,6 +107,7 @@ export default {
 
       this.finish = true
     },
+
     moveDown (sameColor) {
       const allJPositions = sameColor.map(item => item[1])
       const minJ = Math.min.apply(Math, allJPositions)
@@ -120,6 +128,7 @@ export default {
         }
       }
     },
+
     checkColumn () {
       for (let j = 0; j < this.size - 1; j++) {
         if (this.cells.every(item => item[j] === this.emptyColor)) {
@@ -127,6 +136,7 @@ export default {
         }
       }
     },
+
     moveColumn (emptyColumn) {
       for (let j = emptyColumn; j < this.size - 1; j++) {
         for (let i = 0; i < this.size; i++) {
@@ -135,18 +145,22 @@ export default {
         }
       }
     },
+
     calcScore (length) {
       this.score += 2 * length * Math.ceil(length / 10)
     },
+
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     }
   },
+
   components: {
     Modal
   }
 }
 </script>
+
 <style scoped>
 .field {
   padding: 5px;

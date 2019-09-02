@@ -8,6 +8,7 @@
     <LoseModal v-if="lose" @restart="initData" />
   </div>
 </template>
+
 <script>
 import LoseModal from '../components/LoseModal'
 import { getRandomNumber } from '../helpers'
@@ -27,21 +28,25 @@ export default {
       yDown: null
     }
   },
+
   props: {
     options: {
       type: Object
     }
   },
+
   created () {
     this.setKeyEventHandler()
     this.initData()
   },
+
   methods: {
     setKeyEventHandler () {
       window.addEventListener('keydown', this.onKeyDown)
       window.addEventListener('touchstart', this.handleTouchStart)
       window.addEventListener('touchmove', this.handleTouchMove)
     },
+
     initData () {
       this.cells = new Array(this.size)
 
@@ -59,9 +64,11 @@ export default {
       this.checkIntersection()
       this.moveSnake()
     },
+
     setDirection () {
       this.code = Math.floor(Math.random() * (this.arrowCodes[3] - this.arrowCodes[0] + 1) + this.arrowCodes[0])
     },
+
     setSnake () {
       const position = [getRandomNumber(this.size), getRandomNumber(this.size)]
 
@@ -91,6 +98,7 @@ export default {
         }
       }
     },
+
     setBonus () {
       const position = [getRandomNumber(this.size), getRandomNumber(this.size)]
 
@@ -101,11 +109,13 @@ export default {
         this.cells[this.bonus[0]][this.bonus[1]] = 'bonus'
       }
     },
+
     setTimeOut () {
       setTimeout(() => {
         this.moveSnake()
       }, 150)
     },
+
     moveSnake () {
       const lastPos = this.snake[this.snake.length - 1]
 
@@ -170,6 +180,7 @@ export default {
 
       this.arrowPressed = false
     },
+
     checkIntersection () {
       for (let i = 0; i < this.cells.length; i++) {
         for (let j = 0; j < this.cells[i].length; j++) {
@@ -183,6 +194,7 @@ export default {
         this.cells[position[0]][position[1]] = idx === 0 ? 'full cell--first' : 'full'
       })
     },
+
     onKeyDown (e) {
       // The number 2 is the difference between two opposite arrows
       if (this.code === e.keyCode || this.code === e.keyCode + 2 || this.code === e.keyCode - 2 ||
@@ -195,11 +207,13 @@ export default {
       this.checkIntersection()
       this.setCells(this.snake[0][0])
     },
+
     handleTouchStart (e) {
       const firstTouch = e.touches[0]
       this.xDown = firstTouch.clientX
       this.yDown = firstTouch.clientY
     },
+
     handleTouchMove (e) {
       if (!this.xDown || !this.yDown) {
         return
@@ -231,15 +245,18 @@ export default {
       this.xDown = null
       this.yDown = null
     },
+
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     }
   },
+
   components: {
     LoseModal
   }
 }
 </script>
+
 <style scoped>
 .field {
   padding: 5px;

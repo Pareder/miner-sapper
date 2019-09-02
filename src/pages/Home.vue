@@ -11,6 +11,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import DifficultyModal from '../components/DifficultyModal'
 
@@ -20,16 +21,19 @@ export default {
       minerClicked: false
     }
   },
+
   methods: {
     toggleMinerModal () {
       this.minerClicked = !this.minerClicked
     }
   },
+
   components: {
     DifficultyModal
   }
 }
 </script>
+
 <style scoped>
 h1 {
   color: #fff;

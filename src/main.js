@@ -7,11 +7,11 @@ Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
-const zeroTime = (val) => {
+const zeroTime = val => {
   return val > 9 ? val : '0' + val
 }
 
-Vue.prototype.formatTime = (val) => {
+Vue.prototype.formatTime = val => {
   const minutes = Math.floor(val / 60)
   const seconds = (val - minutes * 60).toFixed(2)
   return `${zeroTime(minutes)}:${zeroTime(seconds)}`

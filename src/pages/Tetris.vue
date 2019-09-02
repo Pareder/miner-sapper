@@ -30,6 +30,7 @@
     <Modal v-if="lose" :result="score" @restart="initData" />
   </div>
 </template>
+
 <script>
 import { randomizeModel, rotateModel as rotateModelHelper, getRandomColor, lightenColor } from '../helpers'
 import Modal from '../components/Modal'
@@ -52,19 +53,23 @@ export default {
       yDown: null
     }
   },
+
   props: {
     options: {
       type: Object
     }
   },
+
   computed: {
     spentTime () {
       return +((this.endTime - this.startTime) / 1000).toFixed(2)
     }
   },
+
   created () {
     this.initData()
   },
+
   methods: {
     initData () {
       this.score = 0
@@ -83,6 +88,7 @@ export default {
       this.setTimeOut()
       this.setStepTime()
     },
+
     setKeyEventHandler () {
       if (this.lose) {
         window.removeEventListener('keydown', this.onKeyDown)
@@ -94,6 +100,7 @@ export default {
         window.addEventListener('touchmove', this.handleTouchMove)
       }
     },
+
     onKeyDown (e) {
       switch (e.keyCode) {
         // Left arrow
@@ -116,11 +123,13 @@ export default {
       this.checkIntersection()
       this.setCells(this.currentModel.model[0][0])
     },
+
     handleTouchStart (e) {
       const firstTouch = e.touches[0]
       this.xDown = firstTouch.clientX
       this.yDown = firstTouch.clientY
     },
+
     handleTouchMove (e) {
       if (!this.xDown || !this.yDown) {
         return
@@ -149,6 +158,7 @@ export default {
       this.xDown = null
       this.yDown = null
     },
+
     leftMovement () {
       if (this.currentModel.model.every(item => (item[1] > 0 && this.cells[item[0]][item[1] - 1].value !== 'set'))) {
         this.currentModel.model.map(item => {
@@ -156,6 +166,7 @@ export default {
         })
       }
     },
+
     rightMovement () {
       if (this.currentModel.model.every(item => (item[1] < this.size[1] - 1 &&
         this.cells[item[0]][item[1] + 1].value !== 'set'))) {
@@ -164,6 +175,7 @@ export default {
         })
       }
     },
+
     downMovement () {
       if (this.currentModel.model.some(item => (item[0] === this.size[0] - 1 ||
         this.cells[item[0] + 1][item[1]].value === 'set'))) {
@@ -176,11 +188,13 @@ export default {
         item[0]++
       })
     },
+
     setTimeOut () {
       this.timeout = setTimeout(() => {
         this.moveModel()
       }, this.stepTime)
     },
+
     setStepTime () {
       this.stepInterval = setInterval(() => {
         if (this.stepTime > 100) {
@@ -190,6 +204,7 @@ export default {
         }
       }, 3000)
     },
+
     buildModel () {
       this.randomModel = this.randomNextModel || Math.ceil(Math.random() * this.options.totalModels)
       this.randomNextModel = Math.ceil(Math.random() * this.options.totalModels)
@@ -212,6 +227,7 @@ export default {
         return true
       }
     },
+
     moveModel () {
       let finishMovement = false
       let finishGame = false
@@ -240,6 +256,7 @@ export default {
         this.setTimeOut()
       }
     },
+
     setModel () {
       this.currentModel.model.map(position => {
         this.cells[position[0]][position[1]] = {
@@ -250,6 +267,7 @@ export default {
 
       this.checkFullLine()
     },
+
     rotateModel () {
       const rotatedStatus = this.currentModel.rotated || 0
       const rotatedModel = rotateModelHelper(this.randomModel, this.currentModel.model, rotatedStatus)
@@ -271,6 +289,7 @@ export default {
         this.currentModel.rotated = rotatedModel.rotatedStatus
       }
     },
+
     checkIntersection () {
       for (let i = 0; i < this.size[0]; i++) {
         for (let j = 0; j < this.size[1]; j++) {
@@ -287,6 +306,7 @@ export default {
         }
       })
     },
+
     checkFullLine () {
       let lines = 0
       this.cells.map((item, idx) => {
@@ -304,19 +324,24 @@ export default {
         this.score += lines ** 2
       }
     },
+
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     },
+
     checkNext (id, idx) {
       return this.nextModel.model.some(item => item[0] === id && item[1] === idx + (this.options.size[1] / 2 - 2))
     },
+
     lighten: lightenColor
   },
+
   components: {
     Modal
   }
 }
 </script>
+
 <style scoped>
 .game {
   display: flex;

@@ -2,7 +2,12 @@
   <div class="leaderboard">
     <h3>Leaderboard</h3>
     <ol>
-      <li v-for="(user, id) in leaderboard" :key="id" :class="user.name === name ? 'leader' : ''" :data-position="id + 1">
+      <li
+        v-for="(user, id) in leaderboard"
+        :key="id"
+        :class="user.name === name ? 'leader' : ''"
+        :data-position="id + 1"
+      >
         <mark>{{ user.name }}</mark>
         <span>{{ $route.path.includes('miner') ? formatTime(user.result) : user.result }}</span>
       </li>
@@ -18,6 +23,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -36,6 +42,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 .leaderboard {
   padding: 0 40px;

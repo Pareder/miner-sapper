@@ -23,6 +23,7 @@
     </div>
   </transition>
 </template>
+
 <script>
 import Form from './Form'
 import Leaderboard from './Leaderboard'
@@ -37,14 +38,17 @@ export default {
       sendingError: false
     }
   },
+
   props: {
     result: {
       type: Number
     }
   },
+
   created () {
     this._api = API.create()
   },
+
   methods: {
     async getLeaderboard (name) {
       this.name = name
@@ -70,6 +74,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .modal {
   position: fixed;

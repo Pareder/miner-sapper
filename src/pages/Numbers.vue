@@ -16,6 +16,7 @@
     <Modal v-if="finish" :result="score" @restart="initData" />
   </div>
 </template>
+
 <script>
 import Modal from '../components/Modal'
 import { getRandomNumber, cellBackgroundColor, cellColor } from '../helpers'
@@ -29,14 +30,17 @@ export default {
       score: 0
     }
   },
+
   props: {
     options: {
       type: Object
     }
   },
+
   created () {
     this.initData()
   },
+
   methods: {
     initData () {
       this.cellChanged = false
@@ -54,11 +58,13 @@ export default {
       this.startNumbers()
       this.setKeyEventHandler()
     },
+
     startNumbers () {
       for (let i = 0; i < this.options.startNumbersCount; i++) {
         this.randomCell()
       }
     },
+
     randomCell () {
       const position = [getRandomNumber(this.options.size), getRandomNumber(this.options.size)]
 
@@ -68,9 +74,11 @@ export default {
         this.randomCell()
       }
     },
+
     setKeyEventHandler () {
       window.addEventListener('keydown', this.onKeyDown)
     },
+
     onKeyDown (e) {
       this.cellChanged = false
 
@@ -102,6 +110,7 @@ export default {
         this.setCells(0)
       }
     },
+
     moveCellsLeft () {
       let changed = false
 
@@ -119,6 +128,7 @@ export default {
 
       return changed
     },
+
     moveCellsUp () {
       let changed = false
 
@@ -136,6 +146,7 @@ export default {
 
       return changed
     },
+
     moveCellsRight () {
       let changed = false
 
@@ -153,6 +164,7 @@ export default {
 
       return changed
     },
+
     moveCellsDown () {
       let changed = false
 
@@ -170,6 +182,7 @@ export default {
 
       return changed
     },
+
     checkCells (cell1, cell2) {
       if (!this.cells[cell1[0]][cell1[1]].value && this.cells[cell2[0]][cell2[1]].value) {
         this.cells[cell1[0]][cell1[1]].value = this.cells[cell2[0]][cell2[1]].value
@@ -187,20 +200,26 @@ export default {
         return true
       }
     },
+
     setCells (i) {
       this.$set(this.cells, i, this.cells[i])
     },
+
     cellColor: cellColor,
+
     cellBackgroundColor: cellBackgroundColor,
+
     randomValue () {
       return Math.random() > 0.95 ? 4 : 2
     }
   },
+
   components: {
     Modal
   }
 }
 </script>
+
 <style scoped>
 .field {
   padding: 5px;

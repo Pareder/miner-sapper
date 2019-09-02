@@ -8,6 +8,7 @@
     <div v-if="sendingError" class="error">We apologize, server is currently unavailable, try again later</div>
   </form>
 </template>
+
 <script>
 export default {
   data () {
@@ -17,11 +18,13 @@ export default {
       sent: false
     }
   },
+
   props: {
     sendingError: {
       type: Boolean
     }
   },
+
   methods: {
     setNickname () {
       if (this.name.length > 2 && this.name.length < 20) {
@@ -35,6 +38,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .form {
   padding: 0 40px;

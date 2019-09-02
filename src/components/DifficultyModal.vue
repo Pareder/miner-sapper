@@ -17,6 +17,7 @@
     </div>
   </transition>
 </template>
+
 <style scoped>
 .buttons {
   display: flex;

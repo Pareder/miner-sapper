@@ -22,6 +22,7 @@
     </div>
   </transition>
 </template>
+
 <script>
 import Modal from '../components/Modal'
 import { getRandomNumber, getMinerPositions } from '../helpers'
@@ -39,24 +40,29 @@ export default {
       endTime: null
     }
   },
+
   props: {
     options: {
       type: Object
     }
   },
+
   computed: {
     spentTime () {
       return +((this.endTime - this.startTime) / 1000)
     }
   },
+
   created () {
     this.createField()
   },
+
   methods: {
     createField () {
       this.initData()
       this.setBombsPosition()
     },
+
     initData () {
       this.finish = false
       this.victory = false
@@ -68,6 +74,7 @@ export default {
         this.cells[i] = Array(this.size)
       }
     },
+
     setBombsPosition () {
       let bombsSet = 0
 
@@ -89,6 +96,7 @@ export default {
 
       this.setCellsNumbers()
     },
+
     setCellsNumbers () {
       for (let i = 0; i < this.cells.length; i++) {
         for (let j = 0; j < this.cells[i].length; j++) {
@@ -102,6 +110,7 @@ export default {
         }
       }
     },
+
     checkBombs (i, j) {
       let bombsFound = 0
       const positions = getMinerPositions(i, j)
@@ -114,6 +123,7 @@ export default {
 
       return bombsFound
     },
+
     cellClick (i, j) {
       if (!this.startTime) {
         this.startTime = Date.now()
@@ -131,6 +141,7 @@ export default {
       this.checkFinish()
       this.checkBomb(i, j)
     },
+
     cellRightClick (i, j) {
       if (this.finish) {
         return
@@ -138,11 +149,13 @@ export default {
 
       this.setCells(i, j, 'rightClicked', !this.cells[i][j].rightClicked)
     },
+
     setCells (i, j, key, value) {
       this.$set(this.cells[i][j], key, value)
       this.$set(this.cells[i], j, this.cells[i][j])
       this.$set(this.cells, i, this.cells[i])
     },
+
     checkFinish () {
       const finish = this.cells.every(line => line.every(cell => cell.clicked || cell.value === this.bomb))
 
@@ -152,6 +165,7 @@ export default {
         this.victory = true
       }
     },
+
     checkBomb (i, j) {
       if (this.cells[i][j].value === this.bomb) {
         this.finish = true
@@ -165,6 +179,7 @@ export default {
         }
       }
     },
+
     discardZeros (i, j) {
       const positions = getMinerPositions(i, j)
       positions.map(position => {
@@ -179,11 +194,13 @@ export default {
       })
     }
   },
+
   components: {
     Modal
   }
 }
 </script>
+
 <style scoped>
 .field {
   display: flex;

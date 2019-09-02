@@ -1,7 +1,7 @@
 const express = require('express')
 const middleware = require('../middleware')
 
-const getRoutes = (db) => {
+const getRoutes = db => {
   const routes = express.Router()
 
   /** Query for setting new user time and getting top 5 */

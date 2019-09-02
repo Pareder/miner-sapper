@@ -14,6 +14,7 @@
     </div>
   </transition>
 </template>
+
 <style scoped>
 .modal {
   position: fixed;
