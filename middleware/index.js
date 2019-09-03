@@ -1,13 +1,13 @@
 const middleware = {
   result: ({ body: { name, result, mode } }, res, db) => {
     if (!name || !result || !mode) {
-      return res.send('An error occurred: Name, result and mode are required')
+      return res.status(400).send('An error occurred: Name, result and mode are required')
     }
 
-    const formattedMode = mode.split('/').join('_')
+    const formattedMode = mode.split('/').slice(1).join('_')
 
-    /** Add new user time
-     * @param {String} mode Mode to add time to
+    /** Add new user result
+     * @param {String} mode Mode to add result to
      */
     db.get(formattedMode)
       .push({
@@ -16,7 +16,7 @@ const middleware = {
       })
       .write()
 
-    /** Get results sorted by time */
+    /** Get records sorted by result */
     const leaderboard = db.get(formattedMode)
       .sortBy('result')
       .value()

@@ -1,33 +1,20 @@
 const middleware = require('../middleware')
+const DBMock = require('../db/mocks/DBMock')
 
 const reqMock = {
   body: {}
 }
 const resMock = {
+  status: jest.fn(function() {
+    return this
+  }),
   send: jest.fn()
-}
-const dbMock = {
-  get: jest.fn(function () {
-    return this
-  }),
-  push: jest.fn(function () {
-    return this
-  }),
-  write: jest.fn(function () {
-    return this
-  }),
-  sortBy: jest.fn(function () {
-    return this
-  }),
-  value () {
-    return []
-  }
 }
 
 describe('middleware', () => {
   describe('result method', () => {
     it('Should send error if no name or result or mode provided', () => {
-      middleware.result(reqMock, resMock, dbMock)
+      middleware.result(reqMock, resMock, DBMock)
 
       expect(resMock.send).toBeCalledWith('An error occurred: Name, result and mode are required')
     })
@@ -37,12 +24,12 @@ describe('middleware', () => {
         body: {
           name: 'qwe',
           result: 1,
-          mode: 'mode/submode'
+          mode: '/mode/submode'
         }
       }
-      middleware.result(req, resMock, dbMock)
+      middleware.result(req, resMock, DBMock)
 
-      expect(dbMock.get).toBeCalledWith('mode_submode')
+      expect(DBMock.get).toBeCalledWith('mode_submode')
     })
 
     it('Should call db.push with correct parameters', () => {
@@ -50,12 +37,12 @@ describe('middleware', () => {
         body: {
           name: 'qwe',
           result: 1,
-          mode: 'mode'
+          mode: '/mode'
         }
       }
-      middleware.result(req, resMock, dbMock)
+      middleware.result(req, resMock, DBMock)
 
-      expect(dbMock.push).toBeCalledWith({ name: 'qwe', result: 1 })
+      expect(DBMock.push).toBeCalledWith({ name: 'qwe', result: 1 })
     })
 
     it('Should send correct result', () => {
@@ -63,11 +50,11 @@ describe('middleware', () => {
         body: {
           name: 'qwe',
           result: 1,
-          mode: 'mode'
+          mode: '/mode'
         }
       }
       const db = {
-        ...dbMock,
+        ...DBMock,
         value () {
           return [
             { name: 'qwe', result: 1 },
@@ -91,11 +78,11 @@ describe('middleware', () => {
         body: {
           name: 'qwe',
           result: 1,
-          mode: 'mode'
+          mode: '/mode'
         }
       }
       const db = {
-        ...dbMock,
+        ...DBMock,
         value () {
           return [
             { name: 'qwe', result: 1 },
