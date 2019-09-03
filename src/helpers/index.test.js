@@ -422,4 +422,11 @@ describe('helpers', () => {
       expect(helpers.lightenColor(color)).toEqual('rgba(1, 1, 1, 0.8)')
     })
   })
+
+  describe('formatTime method', () => {
+    it('Should return correct values', () => {
+      expect(helpers.formatTime(60)).toEqual('01:00.00')
+      expect(helpers.formatTime(61)).toEqual('01:01.00')
+    })
+  })
 })

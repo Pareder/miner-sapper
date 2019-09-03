@@ -385,6 +385,17 @@ const lightenColor = (color, opacity = 0.8) => {
   return `rgba${color.slice(3, -1)}, ${opacity})`
 }
 
+const zeroTime = val => {
+  return val > 9 ? val : '0' + val
+}
+
+const formatTime = val => {
+  const minutes = Math.floor(val / 60)
+  const seconds = (val - minutes * 60).toFixed(2)
+
+  return `${zeroTime(minutes)}:${zeroTime(seconds)}`
+}
+
 export {
   randomizeModel,
   rotateModel,
@@ -394,5 +405,6 @@ export {
   cellBackgroundColor,
   cellColor,
   getRandomColor,
-  lightenColor
+  lightenColor,
+  formatTime
 }
