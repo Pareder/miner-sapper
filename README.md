@@ -14,7 +14,7 @@
 npm install
 ```
 
-### Start the server if project was built
+### Starts the server if project was built
 ```
 npm start
 ```
