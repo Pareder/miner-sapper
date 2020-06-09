@@ -2,7 +2,7 @@
   "name": "miner-sapper",
   "version": "1.0.0",
   "engines": {
-    "node": "9.11.2"
+    "node": "10.17.0"
   },
   "repository": "https://github.com/Pareder/miner-sapper.git",
   "author": "Pareder",
