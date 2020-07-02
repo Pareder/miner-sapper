@@ -1,6 +1,10 @@
 # miner-sapper
 
-##### It is the collection of simple classic computer games: minesweeper, tetris, snake, crush and 2048
+<p align="center">
+  <img src="public/favicons/android-icon-192x192.png" alt="miner-sapper">
+</p>
+
+#### It is the collection of simple classic computer games: minesweeper, tetris, snake, crush and 2048. [Try it now](http://miner-sapper.herokuapp.com)
 
 ## Used
 
@@ -14,7 +18,7 @@
 npm install
 ```
 
-### Start the server if project was built
+### Starts the server if project was built
 ```
 npm start
 ```
@@ -38,6 +42,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
