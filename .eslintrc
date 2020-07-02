@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "plugin:vue/essential",
+    "eslint:recommended"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "rules": {
+    "max-len": [2, 120, 4],
+    "object-curly-spacing": ["error", "always"],
+    "semi": ["error", "never"]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  }
+}

@@ -81,8 +81,7 @@ export default {
       while (bombsSet < this.bombsCount) {
         const randomPosition = [getRandomNumber(this.size), getRandomNumber(this.size)]
 
-        if (this.cells[randomPosition[0]][randomPosition[1]] &&
-          this.cells[randomPosition[0]][randomPosition[1]].value === this.bomb) {
+        if (this.cells[randomPosition[0]][randomPosition[1]]?.value === this.bomb) {
           continue
         }
 
@@ -115,8 +114,7 @@ export default {
       let bombsFound = 0
       const positions = getMinerPositions(i, j)
       positions.map(position => {
-        if (this.cells[position[0]] && this.cells[position[0]][position[1]] &&
-          this.cells[position[0]][position[1]].value === this.bomb) {
+        if (this.cells[position[0]]?.[position[1]]?.value === this.bomb && this.cells[position[0]][position[1]]) {
           bombsFound++
         }
       })
@@ -183,8 +181,7 @@ export default {
     discardZeros (i, j) {
       const positions = getMinerPositions(i, j)
       positions.map(position => {
-        if (this.cells[position[0]] && this.cells[position[0]][position[1]] &&
-          !this.cells[position[0]][position[1]].clicked) {
+        if (this.cells[position[0]]?.[position[1]] && !this.cells[position[0]][position[1]].clicked) {
           this.cells[position[0]][position[1]].clicked = true
 
           if (this.cells[position[0]][position[1]].value === 0) {

@@ -81,7 +81,7 @@ export default {
       const positions = getCrushPositions(i, j)
 
       positions.map(position => {
-        if (this.cells[position[0]] && this.cells[position[0]][position[1]] === value) {
+        if (this.cells[position[0]]?.[position[1]] === value) {
           this.cells[position[0]][position[1]] = this.emptyColor
           this.checkColor(position[0], position[1], value, foundSame)
         }
@@ -95,8 +95,7 @@ export default {
         for (let j = 0; j < this.cells[i].length; j++) {
           const positions = getCrushPositions(i, j)
           const notFinished = positions.some(position => {
-            return this.cells[position[0]] && this.cells[i][j] !== this.emptyColor &&
-              this.cells[i][j] === this.cells[position[0]][position[1]]
+            return this.cells[position[0]]?.[position[1]] === this.cells[i][j] && this.cells[i][j] !== this.emptyColor
           })
 
           if (notFinished) {

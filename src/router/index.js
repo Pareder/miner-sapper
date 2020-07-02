@@ -23,11 +23,13 @@ const router = new Router({
         metaTags: [
           {
             name: 'description',
-            content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, Crush and 2048.'
+            content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
+              'Crush and 2048.'
           },
           {
             property: 'og:description',
-            content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, Crush and 2048.'
+            content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
+              'Crush and 2048.'
           }
         ]
       }
@@ -152,15 +154,17 @@ const router = new Router({
       component: Numbers,
       props: { options: config.numbers },
       meta: {
-        title: '2048',
+        title: '2048 Game',
         metaTags: [
           {
             name: 'description',
-            content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add like numbers to win this one?'
+            content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add ' +
+              'numbers to win this one?'
           },
           {
             property: 'og:description',
-            content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add like numbers to win this one?'
+            content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add ' +
+              'numbers to win this one?'
           }
         ]
       }
@@ -169,8 +173,8 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title)
-  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags)
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta?.title)
+  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta?.metaTags)
 
   if (nearestWithTitle) {
     document.title = nearestWithTitle.meta.title

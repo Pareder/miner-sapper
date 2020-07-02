@@ -236,7 +236,7 @@ export default {
         const modelI = this.currentModel.model[i][0]
         const modelJ = this.currentModel.model[i][1]
 
-        if (modelI === this.size[0] - 1 || (this.cells[modelI + 1] && this.cells[modelI + 1][modelJ].value === 'set')) {
+        if (modelI === this.size[0] - 1 || this.cells[modelI + 1]?.[modelJ].value === 'set') {
           this.setModel()
           finishGame = this.buildModel()
           finishMovement = true
@@ -281,7 +281,7 @@ export default {
           rotatedModel.rotatedModel.map(item => ++item[0])
         }
 
-        if (rotatedModel.rotatedModel.some(item => item[0] >= 0 && item[1] >= 0 && this.cells[item[0]][item[1]].value === 'set')) {
+        if (rotatedModel.rotatedModel.some(item => this.cells[item[0]]?.[item[1]]?.value === 'set')) {
           return
         }
 
