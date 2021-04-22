@@ -427,6 +427,7 @@ describe('helpers', () => {
     it('Should return correct values', () => {
       expect(helpers.formatTime(60)).toEqual('01:00.00')
       expect(helpers.formatTime(61)).toEqual('01:01.00')
+      expect(helpers.formatTime(9.99)).toEqual('00:09.99')
     })
   })
 })

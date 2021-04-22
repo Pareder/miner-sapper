@@ -11,7 +11,7 @@
 * [Vue.js](https://vuejs.org/)
 * [vue-router](https://router.vuejs.org/)
 * [Express](https://expressjs.com/)
-* [lowdb](https://github.com/typicode/lowdb)
+* [Firebase](https://firebase.google.com/)
 
 ## Project setup
 ```

@@ -8,14 +8,15 @@
         </div>
         <div class="modal__body">
           <p>Enter your name to post the result <span class="text--green text--bold">
-            {{ $route.path.includes('miner') ? formatTime(result) : result }}
+            {{ isMiner ? formatTime(result) : result }}
           </span></p>
-          <Form v-if="!leaderboard" :sendingError="sendingError" @submitForm="getLeaderboard" />
+          <Form v-if="!leaderboardData.length" :sendingError="sendingError" @submitForm="getLeaderboard" />
           <Leaderboard v-else
             :leaderboard="leaderboard"
             :position="position"
             :result="result"
-            :name="name"
+            :userKey="userKey"
+            :userName="userName"
           />
           <button type="button" class="btn" @click="$emit('restart')">Restart</button>
         </div>
@@ -27,14 +28,16 @@
 <script>
 import Form from './Form'
 import Leaderboard from './Leaderboard'
-import API from '../api'
+import db from '../config/db'
 
 export default {
   data () {
     return {
-      leaderboard: null,
-      position: null,
-      name: '',
+      leaderboardData: [],
+      recordsBefore: [],
+      position: 0,
+      userKey: '',
+      userName: '',
       sendingError: false
     }
   },
@@ -45,29 +48,58 @@ export default {
     }
   },
 
+  watch: {
+    recordsBefore (val) {
+      this.position = val.length + 1
+      this.recordsBefore.length = 0 // Not to store unused array in memory
+    }
+  },
+
+  computed: {
+    isMiner () {
+      return this.$route.path.includes('miner')
+    },
+
+    leaderboard () {
+      return this.isMiner ? this.leaderboardData : this.leaderboardData.slice().reverse()
+    }
+  },
+
   created () {
-    this._api = API.create()
+    const mode = this.$route.path.split('/').slice(1).join('_')
+    this._db = db.ref('results').child(mode)
   },
 
   methods: {
-    async getLeaderboard (name) {
-      this.name = name
+    getLeaderboard (name) {
+      const newItem = this._db.push()
+      this.userKey = newItem.key
+      this.userName = name
 
-      try {
-        const data = await this._api.getLeaderboard({
+      newItem
+        .set({
           name,
-          result: this.result,
-          mode: this.$route.path
+          result: this.result
         })
-
-        this.sendingError = false
-        this.leaderboard = data.leaderboard
-        this.position = data.position
-      } catch (e) {
-        this.sendingError = true
-      }
+        .then(() => {
+          this.sendingError = false
+          this.$rtdbBind(
+            'leaderboardData',
+            // Ascending order for miner mode and descending for other modes
+            this._db.orderByChild('result')[this.isMiner ? 'limitToFirst' : 'limitToLast'](5)
+          )
+          this.$rtdbBind(
+            'recordsBefore',
+            // Get all records that ends before result for miner mode, and that starts from result for others mode
+            this._db.orderByChild('result')[this.isMiner ? 'endBefore' : 'startAfter'](this.result)
+          )
+        })
+        .catch(() => {
+          this.sendingError = true
+        })
     }
   },
+
   components: {
     Form,
     Leaderboard

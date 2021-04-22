@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import { rtdbPlugin } from 'vuefire'
 import App from './App.vue'
 import router from './router'
 import { formatTime } from './helpers'
 
 Vue.use(VueResource)
+Vue.use(rtdbPlugin)
 
 Vue.config.productionTip = false
 

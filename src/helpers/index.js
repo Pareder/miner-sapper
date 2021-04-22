@@ -386,7 +386,7 @@ const lightenColor = (color, opacity = 0.8) => {
 }
 
 const zeroTime = val => {
-  return val > 9 ? val : '0' + val
+  return val > 10 ? val : '0' + val
 }
 
 const formatTime = val => {

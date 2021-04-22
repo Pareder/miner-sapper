@@ -2,9 +2,6 @@ const express = require('express')
 const path = require('path')
 const serveStatic = require('serve-static')
 const compression = require('compression')
-const bodyParser = require('body-parser')
-const db = require('./db')
-const getRoutes = require('./routes')
 
 /** App settings */
 const app = express()
@@ -19,9 +16,6 @@ app.use(serveStatic(path.join(__dirname, '/dist'), {
     res.setHeader('Expires', new Date(Date.now() + 2592000000 * 30).toUTCString())
   }
 }))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/', getRoutes(db))
 
 /** Setting app port */
 const port = process.env.PORT || 5000

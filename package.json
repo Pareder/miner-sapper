@@ -19,16 +19,15 @@
     "pre-commit": "npm run lint && npm test"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
+    "firebase": "^8.4.1",
     "jest": "^26.1.0",
-    "lowdb": "^1.0.0",
     "serve-static": "^1.14.1",
-    "supertest": "^4.0.2",
     "vue": "^2.6.10",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.3.4"
+    "vue-router": "^3.3.4",
+    "vuefire": "^2.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
