@@ -4,20 +4,20 @@
     <ol>
       <li
         v-for="(user, id) in leaderboard"
-        :key="id"
-        :class="user.name === name ? 'leader' : ''"
+        :key="user['.key']"
+        :class="{ leader: user['.key'] === userKey }"
         :data-position="id + 1"
       >
         <mark>{{ user.name }}</mark>
-        <span>{{ $route.path.includes('miner') ? formatTime(user.result) : user.result }}</span>
+        <span>{{ formatResult(user.result) }}</span>
       </li>
     </ol>
-    <div v-if="position > 3">
+    <div v-if="position > 5">
       <p class="skip">...</p>
       <ol>
         <li :data-position="position" class="not_leader">
-          <mark>{{ name }}</mark>
-          <span>{{ $route.path.includes('miner') ? formatTime(result) : result }}</span>
+          <mark>{{ userName }}</mark>
+          <span>{{ formatResult(result) }}</span>
         </li>
       </ol>
     </div>
@@ -36,8 +36,17 @@ export default {
     result: {
       type: Number
     },
-    name: {
+    userKey: {
       type: String
+    },
+    userName: {
+      type: String
+    }
+  },
+
+  methods: {
+    formatResult (result) {
+      return this.$route.path.includes('miner') ? this.formatTime(result) : result
     }
   }
 }
@@ -64,6 +73,7 @@ export default {
 }
 ol {
   margin-top: 0;
+  margin-bottom: 0;
   padding: 0;
   counter-reset: leaderboard;
   list-style-type: none;
@@ -240,6 +250,7 @@ ol {
   }
 }
 .skip {
+  margin: 8px 0;
   font-size: 18px;
   font-weight: bold;
 }
