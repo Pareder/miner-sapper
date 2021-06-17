@@ -4,7 +4,7 @@
   <img src="public/favicons/android-icon-192x192.png" alt="miner-sapper">
 </p>
 
-#### It is the collection of simple classic computer games: minesweeper, tetris, snake, crush and 2048. [Try it now](http://miner-sapper.herokuapp.com)
+#### It is the collection of simple classic computer games: minesweeper, tetris, snake, bubbles and 2048. [Try it now](http://miner-sapper.herokuapp.com)
 
 ## Used
 
