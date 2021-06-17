@@ -6,7 +6,7 @@
       <button type="button" class="btn" @click="toggleMinerModal">Minesweeper</button>
       <router-link to="/tetris" tag="button" class="btn">Tetris</router-link>
       <router-link to="/snake" tag="button" class="btn">Snake</router-link>
-      <router-link to="/crush" tag="button" class="btn">Crush</router-link>
+      <router-link to="/bubbles" tag="button" class="btn">Bubbles</router-link>
       <router-link to="/numbers" tag="button" class="btn">2048</router-link>
     </div>
   </div>

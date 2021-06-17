@@ -4,7 +4,7 @@ import Home from '../pages/Home'
 import Miner from '../pages/Miner'
 import Snake from '../pages/Snake'
 import Tetris from '../pages/Tetris'
-import Crush from '../pages/Crush'
+import Bubbles from '../pages/Bubbles'
 import Numbers from '../pages/Numbers'
 import config from '../config'
 
@@ -19,17 +19,17 @@ const router = new Router({
       path: '/',
       component: Home,
       meta: {
-        title: 'Classical games: minesweeper, tetris, crush, 2048',
+        title: 'Classical games: minesweeper, tetris, bubbles, 2048',
         metaTags: [
           {
             name: 'description',
             content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
-              'Crush and 2048.'
+              'Bubbles and 2048.'
           },
           {
             property: 'og:description',
             content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
-              'Crush and 2048.'
+              'Bubbles and 2048.'
           }
         ]
       }
@@ -130,20 +130,20 @@ const router = new Router({
       }
     },
     {
-      name: 'Crush',
-      path: '/crush',
-      component: Crush,
-      props: { options: config.crush },
+      name: 'Bubbles',
+      path: '/bubbles',
+      component: Bubbles,
+      props: { options: config.bubbles },
       meta: {
-        title: 'Crush',
+        title: 'Bubbles',
         metaTags: [
           {
             name: 'description',
-            content: 'Try crush game. The more bubbles you stuck, the more points you get.'
+            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.'
           },
           {
             property: 'og:description',
-            content: 'Try crush game. The more bubbles you stuck, the more points you get.'
+            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.'
           }
         ]
       }

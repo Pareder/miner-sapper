@@ -284,12 +284,12 @@ describe('helpers', () => {
     })
   })
 
-  describe('getCrushPositions method', () => {
+  describe('getBubblesPositions method', () => {
     it('Should return correct result', () => {
       const firstPosition = 1
       const secondPosition = 1
 
-      expect(helpers.getCrushPositions(firstPosition, secondPosition)).toEqual([
+      expect(helpers.getBubblesPositions(firstPosition, secondPosition)).toEqual([
         [0, 1],
         [1, 0],
         [1, 2],
@@ -428,6 +428,20 @@ describe('helpers', () => {
       expect(helpers.formatTime(60)).toEqual('01:00.00')
       expect(helpers.formatTime(61)).toEqual('01:01.00')
       expect(helpers.formatTime(9.99)).toEqual('00:09.99')
+    })
+  })
+
+  describe('randomString method', () => {
+    test.each([
+      2,
+      4,
+      8,
+      16
+    ])('Should return correct result in case of %p length', length => {
+      const value = helpers.randomString(length)
+
+      expect(value).toEqual(expect.any(String))
+      expect(value.length).toEqual(length)
     })
   })
 })

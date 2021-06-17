@@ -30,7 +30,7 @@ export default {
     totalModels: 7,
     arrowCodes: ArrowCodes
   },
-  crush: {
+  bubbles: {
     size: 16,
     colors: ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
   },
