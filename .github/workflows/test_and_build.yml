@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{steps.get-versions.outputs.node}}
-          cache: 'npm
+          cache: 'npm'
 
       - run: npm ci
       - run: npm test
