@@ -1,4 +1,4 @@
-const randomizeModel = (size, fixedRandom) => {
+export const randomizeModel = (size: number, fixedRandom: number): Array<Array<number>> | null => {
   fixedRandom = Number(fixedRandom)
 
   switch (fixedRandom) {
@@ -58,10 +58,12 @@ const randomizeModel = (size, fixedRandom) => {
         [0, Math.floor(size / 2)],
         [0, Math.floor(size / 2) - 1]
       ]
+    default:
+      return null
   }
 }
 
-const rotateModel = (randomModel, model, rotatedStatus) => {
+export const rotateModel = (randomModel, model, rotatedStatus) => {
   randomModel = Number(randomModel)
   let rotatedModel = []
 
@@ -101,7 +103,7 @@ const rotateModel = (randomModel, model, rotatedStatus) => {
   return rotatedModel
 }
 
-const rotateFirstModel = (rotatedModel, rotatedStatus) => {
+export const rotateFirstModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus) {
     rotatedModel[0][0] -= 2
     rotatedModel[0][1] -= 2
@@ -126,7 +128,7 @@ const rotateFirstModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const rotateThirdModel = (rotatedModel, rotatedStatus) => {
+export const rotateThirdModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus === 0) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] += 1
@@ -167,7 +169,7 @@ const rotateThirdModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const rotateFourthModel = (rotatedModel, rotatedStatus) => {
+export const rotateFourthModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
@@ -190,7 +192,7 @@ const rotateFourthModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const rotateFifthModel = (rotatedModel, rotatedStatus) => {
+export const rotateFifthModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
@@ -213,7 +215,7 @@ const rotateFifthModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const rotateSixthModel = (rotatedModel, rotatedStatus) => {
+export const rotateSixthModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus === 0) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
@@ -250,7 +252,7 @@ const rotateSixthModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const rotateSeventhModel = (rotatedModel, rotatedStatus) => {
+export const rotateSeventhModel = (rotatedModel, rotatedStatus) => {
   if (rotatedStatus === 0) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
@@ -287,11 +289,11 @@ const rotateSeventhModel = (rotatedModel, rotatedStatus) => {
   }
 }
 
-const getRandomNumber = range => {
+export const getRandomNumber = range => {
   return Math.floor(Math.random() * range)
 }
 
-const getBubblesPositions = (i, j) => {
+export const getBubblesPositions = (i, j) => {
   return [
     [i - 1, j],
     [i, j - 1],
@@ -300,7 +302,7 @@ const getBubblesPositions = (i, j) => {
   ]
 }
 
-const getMinerPositions = (i, j) => {
+export const getMinerPositions = (i, j) => {
   return [
     [i - 1, j - 1],
     [i - 1, j],
@@ -313,7 +315,7 @@ const getMinerPositions = (i, j) => {
   ]
 }
 
-const cellBackgroundColor = value => {
+export const cellBackgroundColor = value => {
   switch (value) {
     case 2:
       return '#e2efe5'
@@ -344,11 +346,11 @@ const cellBackgroundColor = value => {
   }
 }
 
-const cellColor = value => {
+export const cellColor = value => {
   return value < 256 ? '#776E65' : '#fff'
 }
 
-const getRandomColor = () => {
+export const getRandomColor = () => {
   const bgColor = [113, 178, 128]
   const randomColor = [
     Math.floor(Math.random() * 255),
@@ -363,7 +365,7 @@ const getRandomColor = () => {
   return `rgb(${randomColor[0]},${randomColor[1]},${randomColor[2]})`
 }
 
-const luminanace = rgb => {
+export const luminanace = rgb => {
   const a = rgb.map(color => {
     color /= 255
     return color <= 0.03928 ? color / 12.92 : Math.pow((color + 0.055) / 1.055, 2.4)
@@ -371,7 +373,7 @@ const luminanace = rgb => {
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722
 }
 
-const contrast = (rgb1, rgb2) => {
+export const contrast = (rgb1, rgb2) => {
   const luminanceFirst = luminanace(rgb1) + 0.05
   const luminanceSecond = luminanace(rgb2) + 0.05
 
@@ -381,22 +383,22 @@ const contrast = (rgb1, rgb2) => {
   return luminanceSecond / luminanceFirst
 }
 
-const lightenColor = (color, opacity = 0.8) => {
+export const lightenColor = (color, opacity = 0.8) => {
   return `rgba${color.slice(3, -1)}, ${opacity})`
 }
 
-const zeroTime = val => {
+export const zeroTime = val => {
   return val > 10 ? val : '0' + val
 }
 
-const formatTime = val => {
+export const formatTime = val => {
   const minutes = Math.floor(val / 60)
   const seconds = (val - minutes * 60).toFixed(2)
 
   return `${zeroTime(minutes)}:${zeroTime(seconds)}`
 }
 
-const randomString = (length = 8) => {
+export const randomString = (length = 8) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let result = ''
   for (let i = 0; i < length; i++) {
@@ -404,18 +406,4 @@ const randomString = (length = 8) => {
   }
 
   return result
-}
-
-export {
-  randomizeModel,
-  rotateModel,
-  getRandomNumber,
-  getBubblesPositions,
-  getMinerPositions,
-  cellBackgroundColor,
-  cellColor,
-  getRandomColor,
-  lightenColor,
-  formatTime,
-  randomString
 }

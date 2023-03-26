@@ -1,4 +1,4 @@
-import * as helpers from '../helpers'
+import * as helpers from '../index'
 
 const sizeMock = 10
 const expectedModelResult = {

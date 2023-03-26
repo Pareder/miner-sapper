@@ -1,18 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '../pages/Home'
-import Miner from '../pages/Miner'
-import Snake from '../pages/Snake'
-import Tetris from '../pages/Tetris'
-import Bubbles from '../pages/Bubbles'
-import Numbers from '../pages/Numbers'
-import config from '../config'
+import VueRouter from 'vue-router'
+import Home from '../pages/Home.vue'
+import Miner from '../pages/Miner.vue'
+import Snake from '../pages/Snake.vue'
+import Tetris from '../pages/Tetris.vue'
+import Bubbles from '../pages/Bubbles.vue'
+import Numbers from '../pages/Numbers.vue'
+import config from '../config/index'
 
-Vue.use(Router)
-
-const router = new Router({
-  mode: 'hash',
-  base: '/',
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHashHistory(),
   routes: [
     {
       name: 'Home',
@@ -169,7 +165,7 @@ const router = new Router({
         ]
       }
     }
-  ]
+  ],
 })
 
 router.beforeEach((to, from, next) => {
