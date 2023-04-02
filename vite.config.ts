@@ -10,6 +10,7 @@ export default defineConfig({
       pages: './src/pages',
       router: './src/router',
       types: './src/types',
+      utils: './src/utils',
     },
   },
   plugins: [vue()],

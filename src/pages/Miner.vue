@@ -23,9 +23,10 @@
   </transition>
 </template>
 
-<script>
-import Modal from '../components/Modal'
-import { getRandomNumber, getMinerPositions } from '../helpers'
+<script lang="ts">
+import getPositions from 'utils/miner/getPositions'
+import getRandomNumber from 'utils/getRandomNumber'
+import Modal from '../components/Modal.vue'
 
 export default {
   data () {
@@ -112,7 +113,7 @@ export default {
 
     checkBombs (i, j) {
       let bombsFound = 0
-      const positions = getMinerPositions(i, j)
+      const positions = getPositions(i, j)
       positions.map(position => {
         if (this.cells[position[0]]?.[position[1]]?.value === this.bomb && this.cells[position[0]][position[1]]) {
           bombsFound++
@@ -135,7 +136,7 @@ export default {
         this.discardZeros(i, j)
       }
 
-      this.setCells(i, j, 'clicked', true)
+      this.cells[i][j].clicked = true
       this.checkFinish()
       this.checkBomb(i, j)
     },
@@ -145,13 +146,7 @@ export default {
         return
       }
 
-      this.setCells(i, j, 'rightClicked', !this.cells[i][j].rightClicked)
-    },
-
-    setCells (i, j, key, value) {
-      this.$set(this.cells[i][j], key, value)
-      this.$set(this.cells[i], j, this.cells[i][j])
-      this.$set(this.cells, i, this.cells[i])
+      this.cells[i][j].rightClicked = !this.cells[i][j].rightClicked
     },
 
     checkFinish () {
@@ -179,7 +174,7 @@ export default {
     },
 
     discardZeros (i, j) {
-      const positions = getMinerPositions(i, j)
+      const positions = getPositions(i, j)
       positions.map(position => {
         if (this.cells[position[0]]?.[position[1]] && !this.cells[position[0]][position[1]].clicked) {
           this.cells[position[0]][position[1]].clicked = true

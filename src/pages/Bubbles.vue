@@ -42,9 +42,11 @@
   </div>
 </template>
 
-<script>
-import Modal from '../components/Modal'
-import { getRandomNumber, getBubblesPositions, randomString } from '../helpers'
+<script lang="ts">
+import getPositions from 'utils/bubbles/getPositions'
+import getRandomNumber from 'utils/getRandomNumber'
+import randomString from 'utils/randomString'
+import Modal from '../components/Modal.vue'
 
 export default {
   data () {
@@ -152,7 +154,7 @@ export default {
     checkFinish () {
       for (let i = 0; i < this.cells.length; i++) {
         for (let j = 0; j < this.cells[i].length; j++) {
-          const positions = getBubblesPositions(i, j)
+          const positions = getPositions(i, j)
           const notFinished = positions.some(position => {
             return this.cells[position[0]]?.[position[1]]?.color === this.cells[i][j]?.color
               && this.cells[i][j] !== null
@@ -189,7 +191,7 @@ export default {
     },
 
     highlightCells(x, y) {
-      const positions = getBubblesPositions(x, y)
+      const positions = getPositions(x, y)
 
       positions.map(([posX, posY]) => {
         const cell = this.cells[posX]?.[posY]

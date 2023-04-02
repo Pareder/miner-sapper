@@ -8,9 +8,9 @@
         </div>
         <div class="modal__body">
           <div class="buttons">
-            <router-link to="/miner/easy" tag="button" class="btn">Easy</router-link>
-            <router-link to="/miner/medium" tag="button" class="btn">Medium</router-link>
-            <router-link to="/miner/hard" tag="button" class="btn">Hard</router-link>
+            <router-link to="/miner/easy" class="btn">Easy</router-link>
+            <router-link to="/miner/medium" class="btn">Medium</router-link>
+            <router-link to="/miner/hard" class="btn">Hard</router-link>
           </div>
         </div>
       </div>
@@ -20,8 +20,6 @@
 
 <style scoped>
 .buttons {
-  display: flex;
   flex-direction: column;
-  align-items: center;
 }
 </style>

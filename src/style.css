@@ -27,23 +27,25 @@ h2 {
 }
 
 .btn {
+  position: relative;
+  z-index: 1;
+  width: 200px;
+  height: 50px;
   margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
-  width: 200px;
-  height: 50px;
-  position: relative;
-  z-index: 1;
-  border: 1px solid #fff;
-  color: #fff;
   background-color: transparent;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 20px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  overflow: hidden;
   outline: none;
+  border: 1px solid #fff;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 20px;
+  line-height: 50px;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 2px;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .btn:before {
@@ -72,4 +74,10 @@ h2 {
 
 .p-20 {
   padding: 20px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

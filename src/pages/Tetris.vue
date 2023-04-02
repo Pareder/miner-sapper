@@ -31,9 +31,12 @@
   </div>
 </template>
 
-<script>
-import { randomizeModel, rotateModel as rotateModelHelper, getRandomColor, lightenColor } from '../helpers'
-import Modal from '../components/Modal'
+<script lang="ts">
+import getRandomColor from 'utils/getRandomColor'
+import lightenColor from 'utils/lightenColor'
+import randomizeModel from 'utils/tetris/randomizeModel'
+import rotateModelHelper from 'utils/tetris/rotateModel'
+import Modal from '../components/Modal.vue'
 
 export default {
   data () {
@@ -121,7 +124,7 @@ export default {
           break
       }
       this.checkIntersection()
-      this.setCells(this.currentModel.model[0][0])
+      this.cells[this.currentModel.model[0][0]] = this.cells[this.currentModel.model[0][0]]
     },
 
     handleTouchStart (e) {
@@ -252,7 +255,7 @@ export default {
 
       if (!finishGame) {
         this.checkIntersection()
-        this.setCells(this.currentModel.model[0][0])
+        this.cells[this.currentModel.model[0][0]] = this.cells[this.currentModel.model[0][0]]
         this.setTimeOut()
       }
     },
@@ -323,10 +326,6 @@ export default {
       if (lines) {
         this.score += lines ** 2
       }
-    },
-
-    setCells (i) {
-      this.$set(this.cells, i, this.cells[i])
     },
 
     checkNext (id, idx) {

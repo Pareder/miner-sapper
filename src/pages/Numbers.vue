@@ -17,9 +17,11 @@
   </div>
 </template>
 
-<script>
-import Modal from '../components/Modal'
-import { getRandomNumber, cellBackgroundColor, cellColor } from '../helpers'
+<script lang="ts">
+import cellBackgroundColor from 'utils/cellBackgroundColor'
+import cellColor from 'utils/cellColor'
+import getRandomNumber from 'utils/getRandomNumber'
+import Modal from '../components/Modal.vue'
 
 export default {
   data () {
@@ -107,7 +109,7 @@ export default {
 
       if (this.cellChanged) {
         this.randomCell()
-        this.setCells(0)
+        // this.cells[0] = this.cells[0]
       }
     },
 
@@ -199,10 +201,6 @@ export default {
       } else if (this.cells[cell1[0]][cell1[1]].value && this.cells[cell2[0]][cell2[1]].value) {
         return true
       }
-    },
-
-    setCells (i) {
-      this.$set(this.cells, i, this.cells[i])
     },
 
     cellColor: cellColor,

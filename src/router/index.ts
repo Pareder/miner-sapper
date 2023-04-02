@@ -1,14 +1,14 @@
-import VueRouter from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import Miner from '../pages/Miner.vue'
 import Snake from '../pages/Snake.vue'
 import Tetris from '../pages/Tetris.vue'
 import Bubbles from '../pages/Bubbles.vue'
 import Numbers from '../pages/Numbers.vue'
-import config from '../config/index'
+import config from '../config'
 
-const router = VueRouter.createRouter({
-  history: VueRouter.createWebHashHistory(),
+const router = createRouter({
+  history: createWebHashHistory(),
   routes: [
     {
       name: 'Home',
@@ -26,9 +26,9 @@ const router = VueRouter.createRouter({
             property: 'og:description',
             content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
               'Bubbles and 2048.'
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
     {
       name: 'Easy',

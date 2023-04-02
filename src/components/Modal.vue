@@ -25,9 +25,9 @@
   </transition>
 </template>
 
-<script>
-import Form from './Form'
-import Leaderboard from './Leaderboard'
+<script lang="ts">
+import Form from './Form.vue'
+import Leaderboard from './Leaderboard.vue'
 import db from '../config/db'
 
 export default {
