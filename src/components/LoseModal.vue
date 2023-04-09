@@ -24,6 +24,7 @@
   right: 0;
   z-index: 2;
 }
+
 .modal__backdrop {
   position: absolute;
   top: 0;
@@ -32,6 +33,7 @@
   right: 0;
   background-color: rgba(0, 0, 0, 0.7);
 }
+
 .modal__inner {
   position: absolute;
   top: 50%;
@@ -43,16 +45,19 @@
   background-color: #fff;
   border-radius: 30px;
 }
+
 .modal__top {
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
 }
+
 .modal__body {
   max-height: 100vh;
   padding: 20px 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 p {
   margin: 0;
 }

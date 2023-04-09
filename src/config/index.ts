@@ -27,7 +27,6 @@ export default {
   },
   tetris: {
     size: [20, 10],
-    totalModels: 7,
     arrowCodes: ArrowCodes
   },
   bubbles: {

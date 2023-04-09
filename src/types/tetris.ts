@@ -22,3 +22,23 @@ export type RotatedModel = {
   rotatedModel: Model,
   rotatedStatus: RotatedStatuses,
 }
+
+export enum CellValue {
+  Unset,
+  Intersect,
+  Set,
+}
+
+export type Cell = {
+  value: CellValue,
+  color?: string,
+}
+
+export type Cells = Array<Array<Cell>>
+
+export type RandomModel = {
+  type?: Models,
+  color?: string,
+  model?: Model | null,
+  rotated?: RotatedStatuses,
+}

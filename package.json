@@ -13,6 +13,7 @@
     "build": "vue-tsc && vite build",
     "test": "vitest --run",
     "test-watch": "vitest",
+    "types": "tsc",
     "preview": "vite preview"
   },
   "dependencies": {

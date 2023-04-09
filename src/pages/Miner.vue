@@ -1,12 +1,12 @@
 <template>
   <transition name="fade">
     <div>
-      <Modal v-if="victory" :result="spentTime" @restart="createField" />
+      <Modal v-if="victory" :result="spentTime" @restart="initData" />
       <div class="field">
-        <div class="line" v-for="(line, id) in cells" :key="id">
+        <div class="row" v-for="(row, id) in cells" :key="id">
           <div
             class="cell"
-            v-for="(cell, idx) in line"
+            v-for="(cell, idx) in row"
             :key="id + '' + idx"
             @click="cellClick(id, idx)"
             @contextmenu.prevent="cellRightClick(id, idx)"
@@ -18,189 +18,161 @@
           </div>
         </div>
       </div>
-      <button type="button" class="btn" @click.prevent="createField">Restart</button>
+      <button type="button" class="btn" @click.prevent="initData">Restart</button>
     </div>
   </transition>
 </template>
 
-<script lang="ts">
-import getPositions from 'utils/miner/getPositions'
-import getRandomNumber from 'utils/getRandomNumber'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { Cells } from '../types/miner'
+import getPositions from '../utils/miner/getPositions'
+import getRandomNumber from '../utils/getRandomNumber'
 import Modal from '../components/Modal.vue'
 
-export default {
-  data () {
-    return {
-      size: this.options.size,
-      cells: null,
-      bombsCount: this.options.bombsCount,
-      bomb: 'boom',
-      finish: null,
-      victory: null,
-      startTime: null,
-      endTime: null
+const props = defineProps<{
+  options: {
+    size: number,
+    bombsCount: number,
+  },
+}>()
+
+const cells = ref<Cells>([])
+const finish = ref(false)
+const victory = ref(false)
+const startTime = ref(0)
+const endTime = ref(0)
+const spentTime = computed(() => Number((endTime.value - startTime.value) / 1000))
+const bomb = 'bomb'
+
+function initData() {
+  finish.value = false
+  victory.value = false
+  startTime.value = 0
+  endTime.value = 0
+  cells.value = new Array(props.options.size).fill(0).map(() => (
+    new Array(props.options.size).fill(0).map(() => ({
+      value: 0,
+      clicked: false,
+      rightClicked: false,
+    }))
+  ))
+
+  setBombs()
+  setNumbers()
+}
+
+function setBombs() {
+  for (let i = 0; i < props.options.bombsCount; i++) {
+    const position = [getRandomNumber(props.options.size), getRandomNumber(props.options.size)]
+    if (cells.value[position[0]][position[1]].value === bomb) {
+      i--
+      continue
     }
-  },
 
-  props: {
-    options: {
-      type: Object
-    }
-  },
-
-  computed: {
-    spentTime () {
-      return +((this.endTime - this.startTime) / 1000)
-    }
-  },
-
-  created () {
-    this.createField()
-  },
-
-  methods: {
-    createField () {
-      this.initData()
-      this.setBombsPosition()
-    },
-
-    initData () {
-      this.finish = false
-      this.victory = false
-      this.startTime = null
-      this.endTime = null
-      this.cells = Array(this.size)
-
-      for (let i = 0; i < this.size; i++) {
-        this.cells[i] = Array(this.size)
-      }
-    },
-
-    setBombsPosition () {
-      let bombsSet = 0
-
-      while (bombsSet < this.bombsCount) {
-        const randomPosition = [getRandomNumber(this.size), getRandomNumber(this.size)]
-
-        if (this.cells[randomPosition[0]][randomPosition[1]]?.value === this.bomb) {
-          continue
-        }
-
-        bombsSet++
-        this.cells[randomPosition[0]][randomPosition[1]] = {
-          value: this.bomb,
-          clicked: false,
-          rightClicked: false
-        }
-      }
-
-      this.setCellsNumbers()
-    },
-
-    setCellsNumbers () {
-      for (let i = 0; i < this.cells.length; i++) {
-        for (let j = 0; j < this.cells[i].length; j++) {
-          if (!this.cells[i][j] || this.cells[i][j].value !== this.bomb) {
-            this.cells[i][j] = {
-              value: this.checkBombs(i, j),
-              clicked: false,
-              rightClicked: false
-            }
-          }
-        }
-      }
-    },
-
-    checkBombs (i, j) {
-      let bombsFound = 0
-      const positions = getPositions(i, j)
-      positions.map(position => {
-        if (this.cells[position[0]]?.[position[1]]?.value === this.bomb && this.cells[position[0]][position[1]]) {
-          bombsFound++
-        }
-      })
-
-      return bombsFound
-    },
-
-    cellClick (i, j) {
-      if (!this.startTime) {
-        this.startTime = Date.now()
-      }
-
-      if (this.cells[i][j].clicked || this.finish) {
-        return
-      }
-
-      if (this.cells[i][j].value === 0) {
-        this.discardZeros(i, j)
-      }
-
-      this.cells[i][j].clicked = true
-      this.checkFinish()
-      this.checkBomb(i, j)
-    },
-
-    cellRightClick (i, j) {
-      if (this.finish) {
-        return
-      }
-
-      this.cells[i][j].rightClicked = !this.cells[i][j].rightClicked
-    },
-
-    checkFinish () {
-      const finish = this.cells.every(line => line.every(cell => cell.clicked || cell.value === this.bomb))
-
-      if (finish) {
-        this.endTime = Date.now()
-        this.finish = true
-        this.victory = true
-      }
-    },
-
-    checkBomb (i, j) {
-      if (this.cells[i][j].value === this.bomb) {
-        this.finish = true
-
-        for (let i = 0; i < this.cells.length; i++) {
-          for (let j = 0; j < this.cells[i].length; j++) {
-            if (this.cells[i][j].value === this.bomb) {
-              this.cells[i][j].clicked = true
-            }
-          }
-        }
-      }
-    },
-
-    discardZeros (i, j) {
-      const positions = getPositions(i, j)
-      positions.map(position => {
-        if (this.cells[position[0]]?.[position[1]] && !this.cells[position[0]][position[1]].clicked) {
-          this.cells[position[0]][position[1]].clicked = true
-
-          if (this.cells[position[0]][position[1]].value === 0) {
-            this.discardZeros(position[0], position[1])
-          }
-        }
-      })
-    }
-  },
-
-  components: {
-    Modal
+    cells.value[position[0]][position[1]].value = bomb
   }
 }
+
+function setNumbers() {
+  for (let i = 0; i < cells.value.length; i++) {
+    for (let j = 0; j < cells.value[i].length; j++) {
+      if (cells.value[i][j].value !== bomb) {
+        cells.value[i][j].value = checkBombs(i, j)
+      }
+    }
+  }
+}
+
+function checkBombs(i: number, j: number): number {
+  const positions = getPositions(i, j)
+  return positions.reduce((acc, position) => {
+    if (cells.value[position[0]]?.[position[1]]?.value === bomb) {
+      acc += 1
+    }
+
+    return acc
+  }, 0)
+}
+
+function cellClick (i: number, j: number) {
+  const cell = cells.value[i][j]
+  if (!startTime.value) {
+    startTime.value = Date.now()
+  }
+
+  if (finish.value || cell.clicked) {
+    return
+  }
+
+  if(cell.value === 0) {
+    discardZeros(i, j)
+  }
+
+  cell.clicked = true
+  checkFinish()
+  checkBomb(i, j)
+}
+
+function cellRightClick(i: number, j: number) {
+  if (finish.value) {
+    return
+  }
+
+  cells.value[i][j].rightClicked = !cells.value[i][j].rightClicked
+}
+
+function checkFinish() {
+  if(!cells.value.every(row => row.every(cell => cell.clicked || cell.value === bomb))) {
+    return
+  }
+
+  endTime.value = Date.now()
+  finish.value = true
+  victory.value = true
+}
+
+function checkBomb(i: number, j: number) {
+  const cell = cells.value[i][j]
+  if(cell.value !== bomb) {
+    return
+  }
+
+  finish.value = true
+  for (let i = 0; i < cells.value.length; i++) {
+    for (let j = 0; j < cells.value[i].length; j++) {
+      if (cells.value[i][j].value === bomb) {
+        cells.value[i][j].clicked = true
+      }
+    }
+  }
+}
+
+function discardZeros(i: number, j: number) {
+  const positions = getPositions(i, j)
+  positions.forEach(position => {
+    if (cells.value[position[0]]?.[position[1]] && !cells.value[position[0]]?.[position[1]]?.clicked) {
+      cells.value[position[0]][position[1]].clicked = true
+      if (cells.value[position[0]][position[1]].value === 0) {
+        discardZeros(position[0], position[1])
+      }
+    }
+  })
+}
+
+initData()
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .field {
   display: flex;
   flex-direction: column;
 }
-.line {
+
+.row {
   display: flex;
 }
+
 .cell {
   width: 50px;
   height: 50px;
@@ -215,13 +187,15 @@ export default {
   transition: all 0.2s;
   cursor: pointer;
   user-select: none;
+  &:not(.bomb):not(.opened):hover {
+    opacity: 0.6;
+  }
 }
-.cell:not(.bomb):not(.opened):hover {
-  opacity: 0.6;
-}
+
 .bomb, .flag {
   position: relative;
 }
+
 .bomb:after, .flag:after {
   content: '';
   position: absolute;
@@ -233,12 +207,15 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .bomb:after {
   background-image: url('../assets/bomb.svg')
 }
+
 .flag:after {
   background-image: url('../assets/flag.svg')
 }
+
 .opened {
   background-color: #71B280;
 }

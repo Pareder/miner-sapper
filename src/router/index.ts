@@ -172,17 +172,17 @@ router.beforeEach((to, from, next) => {
   const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta?.title)
   const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta?.metaTags)
 
-  if (nearestWithTitle) {
+  if (typeof nearestWithTitle?.meta?.title === 'string') {
     document.title = nearestWithTitle.meta.title
   }
 
-  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el))
+  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode?.removeChild(el))
 
-  if (!nearestWithMeta) {
+  if (!Array.isArray(nearestWithMeta?.meta?.metaTags)) {
     return next()
   }
 
-  nearestWithMeta.meta.metaTags.map(tagDef => {
+  nearestWithMeta?.meta.metaTags.map(tagDef => {
     const tag = document.createElement('meta')
 
     Object.keys(tagDef).forEach(key => {

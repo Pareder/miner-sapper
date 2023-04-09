@@ -25,85 +25,54 @@
   </transition>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { child, get, orderByChild, ref as firebaseRef, push, query, update } from 'firebase/database'
+import db from '../config/db'
+import formatTime from '../utils/formatTime'
 import Form from './Form.vue'
 import Leaderboard from './Leaderboard.vue'
-import db from '../config/db'
 
-export default {
-  data () {
-    return {
-      leaderboardData: [],
-      recordsBefore: [],
-      position: 0,
-      userKey: '',
-      userName: '',
-      sendingError: false
-    }
-  },
+const props = defineProps<{
+  result: number,
+}>()
+const route = useRoute()
 
-  props: {
-    result: {
-      type: Number
-    }
-  },
+const leaderboardData = ref([])
+const recordsBefore = ref([])
+const position = ref(0)
+const userKey = ref('')
+const userName = ref('')
+const sendingError = ref(false)
+const isMiner = route.path.includes('miner')
+const leaderboard = isMiner ? leaderboardData.value : leaderboardData.value.slice().reverse()
 
-  watch: {
-    recordsBefore (val) {
-      this.position = val.length + 1
-      this.recordsBefore.length = 0 // Not to store unused array in memory
-    }
-  },
+const mode = route.path.split('/').slice(1).join('_')
+const _db = firebaseRef(db, `results/${mode}`)
 
-  computed: {
-    isMiner () {
-      return this.$route.path.includes('miner')
+function getLeaderboard(name: string) {
+  const newItem = push(_db).key as string
+  userKey.value = newItem
+  userName.value = name
+  const updates = {
+    [newItem]: {
+      name,
+      result: props.result,
     },
-
-    leaderboard () {
-      return this.isMiner ? this.leaderboardData : this.leaderboardData.slice().reverse()
-    }
-  },
-
-  created () {
-    const mode = this.$route.path.split('/').slice(1).join('_')
-    this._db = db.ref('results').child(mode)
-  },
-
-  methods: {
-    getLeaderboard (name) {
-      const newItem = this._db.push()
-      this.userKey = newItem.key
-      this.userName = name
-
-      newItem
-        .set({
-          name,
-          result: this.result
-        })
-        .then(() => {
-          this.sendingError = false
-          this.$rtdbBind(
-            'leaderboardData',
-            // Ascending order for miner mode and descending for other modes
-            this._db.orderByChild('result')[this.isMiner ? 'limitToFirst' : 'limitToLast'](5)
-          )
-          this.$rtdbBind(
-            'recordsBefore',
-            // Get all records that ends before result for miner mode, and that starts from result for others mode
-            this._db.orderByChild('result')[this.isMiner ? 'endBefore' : 'startAfter'](this.result)
-          )
-        })
-        .catch(() => {
-          this.sendingError = true
-        })
-    }
-  },
-
-  components: {
-    Form,
-    Leaderboard
   }
+  update(_db, updates)
+    .then(() => {
+      sendingError.value = false
+      query(_db).then(snapshot => {
+        if(snapshot.exists()) {
+
+        }
+      })
+    })
+    .catch(() => {
+      sendingError.value = true
+    })
 }
 </script>
 

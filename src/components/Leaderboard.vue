@@ -24,31 +24,22 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  props: {
-    leaderboard: {
-      type: Array
-    },
-    position: {
-      type: Number
-    },
-    result: {
-      type: Number
-    },
-    userKey: {
-      type: String
-    },
-    userName: {
-      type: String
-    }
-  },
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { User } from '../types/leaderboard'
+import formatTime from '../utils/formatTime'
 
-  methods: {
-    formatResult (result) {
-      return this.$route.path.includes('miner') ? this.formatTime(result) : result
-    }
-  }
+defineProps<{
+  leaderboard: User[],
+  position: number,
+  result: number,
+  userKey: string,
+  userName: string,
+}>()
+const route = useRoute()
+
+function formatResult(result: number): string|number {
+  return route.path.includes('miner') ? formatTime(result) : result
 }
 </script>
 
@@ -57,12 +48,11 @@ export default {
   padding: 0 40px;
   transform-origin: top;
   animation: show-leaderboard 0.5s;
-}
-@media screen and (max-width: 500px) {
-  .leaderboard {
+  @media screen and (max-width: 500px) {
     padding: 0;
   }
 }
+
 @keyframes show-leaderboard {
   0% {
     transform: scaleY(0);
@@ -71,6 +61,7 @@ export default {
     transform: scaleY(1);
   }
 }
+
 ol {
   margin-top: 0;
   margin-bottom: 0;
@@ -249,6 +240,7 @@ ol {
     }
   }
 }
+
 .skip {
   margin: 8px 0;
   font-size: 18px;

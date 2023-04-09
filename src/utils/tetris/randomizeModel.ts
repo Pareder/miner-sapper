@@ -1,7 +1,8 @@
 import { Model, Models } from '../../types/tetris'
 
-export default function randomizeModel(size: number, fixedRandom: Models): Model | null {
-  switch (fixedRandom) {
+export default function randomizeModel(size: number, type: Models): Model | null {
+  // console.log(type)
+  switch (type) {
     case Models.I:
       return [
         [0, Math.floor(size / 2) - 2],

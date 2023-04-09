@@ -9,32 +9,25 @@
   </form>
 </template>
 
-<script lang="ts">
-export default {
-  data () {
-    return {
-      name: '',
-      error: false,
-      sent: false
-    }
-  },
+<script setup lang="ts">
+import { ref } from 'vue'
 
-  props: {
-    sendingError: {
-      type: Boolean
-    }
-  },
+const props = defineProps<{
+  sendingError: boolean,
+}>()
+const emit = defineEmits(['submitForm'])
 
-  methods: {
-    setNickname () {
-      if (this.name.length > 2 && this.name.length < 20) {
-        this.error = false
-        this.sent = true
-        this.$emit('submitForm', this.name)
-      } else {
-        this.error = true
-      }
-    }
+const name = ref('')
+const error = ref(false)
+const sent = ref(false)
+
+function setNickname() {
+  if (name.value.length > 2 && name.value.length < 20) {
+    error.value = false
+    sent.value = true
+    emit('submitForm', name.value)
+  } else {
+    error.value = true
   }
 }
 </script>
