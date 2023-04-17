@@ -1,10 +1,12 @@
-# miner-sapper
+[![Netlify Status](https://api.netlify.com/api/v1/badges/516c2013-09ff-420d-b078-1f8453082915/deploy-status)](https://app.netlify.com/sites/miner-sapper/deploys)
+
+# [miner-sapper](https://miner-sapper.netlify.app)
 
 <p align="center">
   <img src="public/favicons/android-icon-192x192.png" alt="miner-sapper">
 </p>
 
-#### It is the collection of simple classic computer games: minesweeper, tetris, snake, bubbles and 2048. [Try it now](http://miner-sapper.herokuapp.com)
+#### It is the collection of simple classic computer games: minesweeper, tetris, snake, bubbles and 2048.
 
 ## Used
 
