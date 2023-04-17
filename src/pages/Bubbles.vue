@@ -6,11 +6,11 @@
       tag="div"
       class="field"
       :style="{
-        '--grid-size': size
+        '--grid-size': props.options.size
       }"
     >
-      <template v-for="(line, x) in cells">
-        <template v-for="(cell, y) in line">
+      <template v-for="(row, x) in cells">
+        <template v-for="(cell, y) in row">
           <div
             v-if="!cell"
             :key="`${x}-${y}`"
@@ -19,7 +19,7 @@
               'grid-column': `${x + 1} / span 1`,
               'grid-row': `${y + 1} / span 1`
             }"
-          ></div>
+          />
           <div
             v-else
             :key="cell.id"
@@ -34,177 +34,152 @@
             }"
             @click="onCellClick"
             @mouseover="onCellMouseOver(x, y)"
-          ></div>
+          />
         </template>
       </template>
     </transition-group>
-    <Modal v-if="finish" :result="score" @restart="initData" />
+    <Modal
+      v-if="finish"
+      :result="score"
+      @restart="initData"
+    />
   </div>
 </template>
 
-<script>
-import Modal from '../components/Modal'
-import { getRandomNumber, getBubblesPositions, randomString } from '../helpers'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { Cells } from 'types/bubbles'
+import getPositions from 'utils/bubbles/getPositions'
+import getRandomNumber from 'utils/getRandomNumber'
+import randomString from 'utils/randomString'
+import Modal from 'components/Modal.vue'
 
-export default {
-  data () {
-    return {
-      size: this.options.size,
-      cells: null,
-      colors: this.options.colors,
-      score: 0,
-      finish: false
+const props = defineProps<{
+  options: {
+    size: number,
+    colors: Array<string>,
+  },
+}>()
+
+const cells = ref<Cells>([])
+const score = ref(0)
+const finish = ref(false)
+const highlightedCellsCount = computed(() => cells.value
+  .map(row => row.filter(cell => cell?.highlight))
+  .flat()
+  .length,
+)
+
+function initData() {
+  cells.value = new Array(props.options.size).fill(0).map(() => (
+    new Array(props.options.size).fill(0).map(() => ({
+      id: randomString(16),
+      color: props.options.colors[getRandomNumber(props.options.colors.length)],
+      highlight: false,
+    }))
+  ))
+  finish.value = false
+  score.value = 0
+}
+
+function onCellClick() {
+  if (highlightedCellsCount.value < 2) {
+    return
+  }
+
+  score.value += 2 * highlightedCellsCount.value * Math.ceil(highlightedCellsCount.value / 10)
+
+  for (let i = 0; i < props.options.size; i++) {
+    let offset = 0
+    for (let j = props.options.size - 1; j >= 0;) {
+      if (cells.value[i][j]?.highlight) {
+        for (let k = j - 1; k >= 0; k--) {
+          cells.value[i][k + 1] = cells.value[i][k]
+        }
+
+        cells.value[i][offset] = null
+        offset++
+      } else {
+        j--
+      }
     }
-  },
+  }
 
-  props: {
-    options: {
-      type: Object
+  checkColumn()
+  checkFinish()
+}
+
+function checkColumn() {
+  for (let i = 0; i < cells.value.length; i++) {
+    if (cells.value[i].some(Boolean)) {
+      continue
     }
-  },
 
-  computed: {
-    highlightedCellsCount () {
-      return this.cells
-        .map(cell => {
-          return cell.filter(item => item?.highlight)
-        })
-        .flat()
-        .length
-    }
-  },
-
-  created () {
-    this.initData()
-  },
-
-  methods: {
-    initData () {
-      this.finish = false
-      this.score = 0
-      this.cells = []
-
-      for (let i = 0; i < this.size; i++) {
-        this.cells[i] = []
-        for (let j = 0; j < this.size; j++) {
-          this.cells[i][j] = {
-            id: randomString(16),
-            color: this.colors[getRandomNumber(this.colors.length)],
-            highlight: false
-          }
-        }
-      }
-    },
-
-    onCellClick () {
-      if (this.highlightedCellsCount < 2) {
-        return
-      }
-
-      for (let i = 0; i < this.size; i++) {
-        let offset = 0
-        for (let j = this.size - 1; j >= 0;) {
-          if (this.cells[i][j]?.highlight) {
-            for (let k = j - 1; k >= 0; k--) {
-              this.cells[i][k + 1] = this.cells[i][k]
-            }
-
-            this.cells[i][offset] = null
-            offset++
-          } else {
-            j--
-          }
-        }
-      }
-
-      this.calcScore()
-      this.checkColumn()
-      this.setCells()
-      this.checkFinish()
-    },
-
-    calcScore () {
-      this.score += 2 * this.highlightedCellsCount * Math.ceil(this.highlightedCellsCount / 10)
-    },
-
-    checkColumn () {
-      for (let i = 1; i < this.size; i++) {
-        if (this.cells[i].some(item => item)) {
-          continue
-        }
-
-        this.moveColumn(i)
-      }
-    },
-
-    moveColumn (emptyColumn) {
-      for (let i = emptyColumn; i > 0; i--) {
-        this.cells[i] = this.cells[i - 1]
-      }
-
-      this.cells[0] = new Array(this.size).fill(null)
-    },
-
-    setCells () {
-      this.cells = this.cells.map(cell => cell.map(item => item))
-    },
-
-    checkFinish () {
-      for (let i = 0; i < this.cells.length; i++) {
-        for (let j = 0; j < this.cells[i].length; j++) {
-          const positions = getBubblesPositions(i, j)
-          const notFinished = positions.some(position => {
-            return this.cells[position[0]]?.[position[1]]?.color === this.cells[i][j]?.color
-              && this.cells[i][j] !== null
-          })
-
-          if (notFinished) {
-            return
-          }
-        }
-      }
-
-      this.finish = true
-    },
-
-    onCellMouseOver(x, y) {
-      const cell = this.cells[x][y]
-      if (!cell || cell.highlight) {
-        return
-      }
-
-      this.removeHighlight()
-      this.highlightCells(x, y)
-      this.setCells()
-    },
-
-    removeHighlight() {
-      this.cells.forEach(cell => {
-        cell.forEach(item => {
-          if (item) {
-            item.highlight = false
-          }
-        })
-      })
-    },
-
-    highlightCells(x, y) {
-      const positions = getBubblesPositions(x, y)
-
-      positions.map(([posX, posY]) => {
-        const cell = this.cells[posX]?.[posY]
-        if (cell?.highlight !== true && cell?.color === this.cells[x][y].color) {
-          this.cells[posX][posY].highlight = true
-          this.highlightCells(posX, posY)
-        }
-      })
-    }
-  },
-
-  components: {
-    Modal
+    moveColumn(i)
   }
 }
+
+function moveColumn(index: number) {
+  for (let i =  index; i > 0; i--) {
+    cells.value[i] = cells.value[i - 1]
+  }
+
+  cells.value[0] = new Array(props.options.size).fill(null)
+}
+
+function checkFinish() {
+  for (let i = 0; i < cells.value.length; i++) {
+    for (let j = 0; j < cells.value[i].length; j++) {
+      const positions = getPositions(i, j)
+      const notFinished = positions.some(position => (
+        cells.value[position[0]]?.[position[1]]?.color === cells.value[i][j]?.color && cells.value[i][j] !== null
+      ))
+
+      if (notFinished) {
+        return
+      }
+    }
+  }
+
+  finish.value = true
+}
+
+function onCellMouseOver(i: number, j: number) {
+  const cell = cells.value[i][j]
+  if(!cell || cell.highlight) {
+    return
+  }
+
+  removeHighlight()
+  highlightCells(i, j)
+}
+
+function removeHighlight() {
+  cells.value.forEach(row => {
+    row.forEach(cell => {
+      if (cell) {
+        cell.highlight = false
+      }
+    })
+  })
+}
+
+function highlightCells(i: number, j: number) {
+  const positions = getPositions(i, j)
+  positions.forEach(position => {
+    const cell = cells.value[position[0]]?.[position[1]]
+    if(!cell) {
+      return
+    }
+
+    if (!cell.highlight && cell.color === cells.value?.[i]?.[j]?.color) {
+      cell.highlight = true
+      highlightCells(position[0], position[1])
+    }
+  })
+}
+
+initData()
 </script>
 
 <style scoped lang="scss">

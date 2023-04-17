@@ -9,8 +9,8 @@
 ## Used
 
 * [Vue.js](https://vuejs.org/)
+* [Vite](https://vitejs.dev)
 * [vue-router](https://router.vuejs.org/)
-* [Express](https://expressjs.com/)
 * [Firebase](https://firebase.google.com/)
 
 ## Project setup
@@ -18,14 +18,9 @@
 npm install
 ```
 
-### Starts the server if project was built
-```
-npm start
-```
-
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
@@ -33,12 +28,7 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### Preview in a production-like environment
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+npm run preview
 ```

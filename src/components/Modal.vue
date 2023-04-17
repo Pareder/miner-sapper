@@ -1,109 +1,117 @@
 <template>
   <transition name="fade">
     <div class="modal">
-      <div class="modal__backdrop"></div>
+      <div class="modal__backdrop" />
       <div class="modal__inner">
         <div class="modal__top">
           <h2>Good job!</h2>
         </div>
         <div class="modal__body">
-          <p>Enter your name to post the result <span class="text--green text--bold">
-            {{ isMiner ? formatTime(result) : result }}
-          </span></p>
-          <Form v-if="!leaderboardData.length" :sendingError="sendingError" @submitForm="getLeaderboard" />
-          <Leaderboard v-else
+          <p>
+            Enter your name to post the result <span class="text--green text--bold">
+              {{ isMiner ? formatTime(result) : result }}
+            </span>
+          </p>
+          <Form
+            v-if="!leaderboard.length"
+            :sending-error="sendingError"
+            @submit-form="getLeaderboard"
+          />
+          <Leaderboard
+            v-else
             :leaderboard="leaderboard"
             :position="position"
             :result="result"
-            :userKey="userKey"
-            :userName="userName"
+            :user-key="userKey"
+            :user-name="userName"
           />
-          <button type="button" class="btn" @click="$emit('restart')">Restart</button>
+          <button
+            type="button"
+            class="btn"
+            @click="$emit('restart')"
+          >
+            Restart
+          </button>
         </div>
       </div>
     </div>
   </transition>
 </template>
 
-<script>
-import Form from './Form'
-import Leaderboard from './Leaderboard'
-import db from '../config/db'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import {
+  endBefore,
+  get,
+  limitToFirst,
+  limitToLast,
+  orderByChild,
+  ref as firebaseRef,
+  push,
+  query,
+  startAfter,
+  update,
+} from 'firebase/database'
+import { User } from 'types/leaderboard'
+import db from 'config/db'
+import formatTime from 'utils/formatTime'
+import Form from './Form.vue'
+import Leaderboard from './Leaderboard.vue'
 
-export default {
-  data () {
-    return {
-      leaderboardData: [],
-      recordsBefore: [],
-      position: 0,
-      userKey: '',
-      userName: '',
-      sendingError: false
-    }
-  },
+const props = defineProps<{
+  result: number,
+}>()
+defineEmits(['restart'])
 
-  props: {
-    result: {
-      type: Number
-    }
-  },
+const route = useRoute()
 
-  watch: {
-    recordsBefore (val) {
-      this.position = val.length + 1
-      this.recordsBefore.length = 0 // Not to store unused array in memory
-    }
-  },
+const leaderboard = ref<Array<User>>([])
+const position = ref(0)
+const userKey = ref('')
+const userName = ref('')
+const sendingError = ref(false)
+const isMiner = route.path.includes('miner')
 
-  computed: {
-    isMiner () {
-      return this.$route.path.includes('miner')
+const mode = route.path.split('/').slice(1).join('_')
+const _db = firebaseRef(db, `results/${mode}`)
+
+function getLeaderboard(name: string) {
+  const newItem = push(_db).key as string
+  userKey.value = newItem
+  userName.value = name
+  const updates = {
+    [newItem]: {
+      name,
+      result: props.result,
     },
-
-    leaderboard () {
-      return this.isMiner ? this.leaderboardData : this.leaderboardData.slice().reverse()
-    }
-  },
-
-  created () {
-    const mode = this.$route.path.split('/').slice(1).join('_')
-    this._db = db.ref('results').child(mode)
-  },
-
-  methods: {
-    getLeaderboard (name) {
-      const newItem = this._db.push()
-      this.userKey = newItem.key
-      this.userName = name
-
-      newItem
-        .set({
-          name,
-          result: this.result
-        })
-        .then(() => {
-          this.sendingError = false
-          this.$rtdbBind(
-            'leaderboardData',
-            // Ascending order for miner mode and descending for other modes
-            this._db.orderByChild('result')[this.isMiner ? 'limitToFirst' : 'limitToLast'](5)
-          )
-          this.$rtdbBind(
-            'recordsBefore',
-            // Get all records that ends before result for miner mode, and that starts from result for others mode
-            this._db.orderByChild('result')[this.isMiner ? 'endBefore' : 'startAfter'](this.result)
-          )
-        })
-        .catch(() => {
-          this.sendingError = true
-        })
-    }
-  },
-
-  components: {
-    Form,
-    Leaderboard
   }
+  update(_db, updates)
+    .then(() => {
+      sendingError.value = false
+      const leaderboardRef = query(_db, orderByChild('result'), isMiner ? limitToFirst(5) : limitToLast(5))
+      get(leaderboardRef).then(snapshot => {
+        if (snapshot.exists()) {
+          const value: { [key: string]: User } = snapshot.val()
+          leaderboard.value = Object.entries(value)
+            .map(([key, data]) => ({
+              key,
+              name: data.name,
+              result: data.result,
+            }))
+            .sort((a, b) => isMiner ? a.result - b.result : b.result - a.result)
+        }
+      })
+      const positionRef = query(_db, orderByChild('result'), isMiner ? endBefore(props.result) : startAfter(props.result))
+      get(positionRef).then(snapshot => {
+        if (snapshot.exists()) {
+          position.value = Object.keys(snapshot.val()).length + 1
+        }
+      })
+    })
+    .catch(() => {
+      sendingError.value = true
+    })
 }
 </script>
 

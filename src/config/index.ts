@@ -10,33 +10,32 @@ export default {
   miner: {
     easy: {
       size: 8,
-      bombsCount: 10
+      bombsCount: 10,
     },
     medium: {
       size: 12,
-      bombsCount: 30
+      bombsCount: 30,
     },
     hard: {
       size: 16,
-      bombsCount: 55
-    }
+      bombsCount: 55,
+    },
   },
   snake: {
     size: 20,
-    arrowCodes: ArrowCodes
+    arrowCodes: ArrowCodes,
   },
   tetris: {
     size: [20, 10],
-    totalModels: 7,
-    arrowCodes: ArrowCodes
+    arrowCodes: ArrowCodes,
   },
   bubbles: {
     size: 16,
-    colors: ['red', 'green', 'blue', 'yellow', 'purple', 'orange']
+    colors: ['red', 'green', 'blue', 'yellow', 'purple', 'orange'],
   },
   numbers: {
     size: 4,
     arrowCodes: ArrowCodes,
-    startNumbersCount: 2
-  }
+    startNumbersCount: 2,
+  },
 }

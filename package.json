@@ -1,54 +1,42 @@
 {
   "name": "miner-sapper",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "engines": {
-    "node": "12.13.1"
+    "node": "14.19.0"
   },
+  "type": "module",
   "repository": "https://github.com/Pareder/miner-sapper.git",
   "author": "Pareder",
   "license": "MIT",
-  "main": "./server.js",
   "scripts": {
-    "start": "node server.js",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test": "jest"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "types": "vue-tsc",
+    "lint": "eslint --ext .ts,.vue src",
+    "test": "vitest --run",
+    "test-watch": "vitest",
+    "preview": "vite preview"
   },
-  "gitHooks": {
-    "pre-commit": "npm run lint && npm test"
+  "husky":{
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test && npm run types"
+    }
   },
   "dependencies": {
-    "compression": "^1.7.4",
-    "express": "^4.17.3",
-    "firebase": "^8.4.1",
-    "jest": "^26.1.0",
-    "serve-static": "^1.14.1",
-    "vue": "^2.6.10",
-    "vue-resource": "^1.5.3",
-    "vue-router": "^3.3.4",
-    "vuefire": "^2.2.5"
+    "firebase": "^9.18.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "@vue/cli-plugin-babel": "^4.4.6",
-    "@vue/cli-plugin-eslint": "^4.4.6",
-    "@vue/cli-service": "^4.4.6",
-    "babel-eslint": "^10.0.3",
-    "babel-jest": "^26.1.0",
-    "eslint": "^7.3.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
-    "vue-eslint-parser": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
-  },
-  "jest": {
-    "transformIgnorePatterns": [
-      "<rootDir>/(node_modules)/"
-    ]
+    "@typescript-eslint/parser": "^5.58.0",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "husky": "^8.0.3",
+    "sass": "^1.60.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0",
+    "vitest": "^0.29.7",
+    "vue-tsc": "^1.2.0"
   }
 }

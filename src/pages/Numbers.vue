@@ -2,222 +2,177 @@
   <div>
     <h1>Score: {{ score }}</h1>
     <div class="field">
-      <div class="line" v-for="(line, id) in cells" :key="id">
+      <div
+        v-for="(line, id) in cells"
+        :key="id"
+        class="line"
+      >
         <div
-          class="cell"
           v-for="(cell, idx) in line"
           :key="id + '' + idx"
+          class="cell"
           :style="`background-color: ${ cellBackgroundColor(cell.value) }; color: ${ cellColor(cell.value) }`"
         >
           {{ cell.value }}
         </div>
       </div>
     </div>
-    <Modal v-if="finish" :result="score" @restart="initData" />
+    <Modal
+      v-if="finish"
+      :result="score"
+      @restart="initData"
+    />
   </div>
 </template>
 
-<script>
-import Modal from '../components/Modal'
-import { getRandomNumber, cellBackgroundColor, cellColor } from '../helpers'
+<script setup lang="ts">
+import { onUnmounted, ref } from 'vue'
+import { Cells } from 'types/numbers'
+import cellBackgroundColor from 'utils/cellBackgroundColor'
+import cellColor from 'utils/cellColor'
+import getRandomNumber from 'utils/getRandomNumber'
+import Modal from 'components/Modal.vue'
 
-export default {
-  data () {
-    return {
-      cells: [],
-      cellChanged: false,
-      finish: false,
-      score: 0
-    }
+const props = defineProps<{
+  options: {
+    size: number,
+    arrowCodes: Array<number>,
+    startNumbersCount: number,
   },
+}>()
 
-  props: {
-    options: {
-      type: Object
-    }
-  },
+const cells = ref<Cells>([])
+const cellChanged = ref(false)
+const finish = ref(false)
+const score = ref(0)
 
-  created () {
-    this.initData()
-  },
+function initData() {
+  cells.value = new Array(props.options.size).fill(0).map(() => (
+    new Array(props.options.size).fill(0).map(() => ({ value: null }))
+  ))
+  cellChanged.value = false
+  finish.value = false
+  score.value = 0
 
-  methods: {
-    initData () {
-      this.cellChanged = false
-      this.finish = false
-      this.score = 0
-
-      for (let i = 0; i < this.options.size; i++) {
-        this.cells[i] = []
-
-        for (let j = 0; j < this.options.size; j++) {
-          this.cells[i][j] = { value: null }
-        }
-      }
-
-      this.startNumbers()
-      this.setKeyEventHandler()
-    },
-
-    startNumbers () {
-      for (let i = 0; i < this.options.startNumbersCount; i++) {
-        this.randomCell()
-      }
-    },
-
-    randomCell () {
-      const position = [getRandomNumber(this.options.size), getRandomNumber(this.options.size)]
-
-      if (!this.cells[position[0]][position[1]].value) {
-        this.cells[position[0]][position[1]].value = this.randomValue()
-      } else {
-        this.randomCell()
-      }
-    },
-
-    setKeyEventHandler () {
-      window.addEventListener('keydown', this.onKeyDown)
-    },
-
-    onKeyDown (e) {
-      this.cellChanged = false
-
-      switch (e.keyCode) {
-        case this.options.arrowCodes[0]:
-          this.moveCellsLeft()
-          break
-        case this.options.arrowCodes[1]:
-          this.moveCellsUp()
-          break
-        case this.options.arrowCodes[2]:
-          this.moveCellsRight()
-          break
-        case this.options.arrowCodes[3]:
-          this.moveCellsDown()
-          break
-        default:
-          return
-      }
-
-      this.finish = this.cells.every(item => item.every(cell => cell.value))
-
-      if (this.finish) {
-        return
-      }
-
-      if (this.cellChanged) {
-        this.randomCell()
-        this.setCells(0)
-      }
-    },
-
-    moveCellsLeft () {
-      let changed = false
-
-      for (let i = 0; i < this.options.size; i++) {
-        for (let j = 0; j < this.options.size - 1; j++) {
-          for (let k = j + 1; k < this.options.size; k++) {
-            const finish = this.checkCells([i, j], [i, k])
-
-            if (finish) {
-              break
-            }
-          }
-        }
-      }
-
-      return changed
-    },
-
-    moveCellsUp () {
-      let changed = false
-
-      for (let j = 0; j < this.options.size; j++) {
-        for (let i = 0; i < this.options.size - 1; i++) {
-          for (let k = i + 1; k < this.options.size; k++) {
-            const finish = this.checkCells([i, j], [k, j])
-
-            if (finish) {
-              break
-            }
-          }
-        }
-      }
-
-      return changed
-    },
-
-    moveCellsRight () {
-      let changed = false
-
-      for (let i = 0; i < this.options.size; i++) {
-        for (let j = this.options.size - 1; j > 0; j--) {
-          for (let k = j - 1; k >= 0; k--) {
-            const finish = this.checkCells([i, j], [i, k])
-
-            if (finish) {
-              break
-            }
-          }
-        }
-      }
-
-      return changed
-    },
-
-    moveCellsDown () {
-      let changed = false
-
-      for (let j = 0; j < this.options.size; j++) {
-        for (let i = this.options.size - 1; i > 0; i--) {
-          for (let k = i - 1; k >= 0; k--) {
-            const finish = this.checkCells([i, j], [k, j])
-
-            if (finish) {
-              break
-            }
-          }
-        }
-      }
-
-      return changed
-    },
-
-    checkCells (cell1, cell2) {
-      if (!this.cells[cell1[0]][cell1[1]].value && this.cells[cell2[0]][cell2[1]].value) {
-        this.cells[cell1[0]][cell1[1]].value = this.cells[cell2[0]][cell2[1]].value
-        this.cells[cell2[0]][cell2[1]].value = null
-        this.cellChanged = true
-      } else if (this.cells[cell1[0]][cell1[1]].value &&
-        this.cells[cell1[0]][cell1[1]].value === this.cells[cell2[0]][cell2[1]].value) {
-        this.cells[cell1[0]][cell1[1]].value *= 2
-        this.cells[cell2[0]][cell2[1]].value = null
-        this.cellChanged = true
-        this.score += this.cells[cell1[0]][cell1[1]].value
-
-        return true
-      } else if (this.cells[cell1[0]][cell1[1]].value && this.cells[cell2[0]][cell2[1]].value) {
-        return true
-      }
-    },
-
-    setCells (i) {
-      this.$set(this.cells, i, this.cells[i])
-    },
-
-    cellColor: cellColor,
-
-    cellBackgroundColor: cellBackgroundColor,
-
-    randomValue () {
-      return Math.random() > 0.95 ? 4 : 2
-    }
-  },
-
-  components: {
-    Modal
+  for (let i = 0; i < props.options.startNumbersCount; i++) {
+    addRandomCell()
   }
 }
+
+function addRandomCell() {
+  const position = [getRandomNumber(props.options.size), getRandomNumber(props.options.size)]
+  if (!cells.value[position[0]][position[1]].value) {
+    cells.value[position[0]][position[1]].value = Math.random() > 0.95 ? 4 : 2
+  } else {
+    addRandomCell()
+  }
+}
+
+function onKeyDown(e: KeyboardEvent) {
+  cellChanged.value = false
+  switch(e.keyCode) {
+    case props.options.arrowCodes[0]:
+      moveCellsLeft()
+      break
+    case props.options.arrowCodes[1]:
+      moveCellsUp()
+      break
+    case props.options.arrowCodes[2]:
+      moveCellsRight()
+      break
+    case props.options.arrowCodes[3]:
+      moveCellsDown()
+      break
+    default:
+      return
+  }
+
+  finish.value = cells.value.every(row => row.every(cell => cell.value))
+  if (finish.value) {
+    return
+  }
+
+  if (cellChanged.value) {
+    addRandomCell()
+  }
+}
+
+function moveCellsLeft() {
+  for (let i = 0; i < props.options.size; i++) {
+    for (let j = 0; j < props.options.size - 1; j++) {
+      for (let k = j + 1; k < props.options.size; k++) {
+        if(checkCells([i, j], [i, k])) {
+          break
+        }
+      }
+    }
+  }
+}
+
+function moveCellsUp() {
+  for (let j = 0; j < props.options.size; j++) {
+    for (let i = 0; i < props.options.size - 1; i++) {
+      for (let k = i + 1; k < props.options.size; k++) {
+        if (checkCells([i, j], [k, j])) {
+          break
+        }
+      }
+    }
+  }
+}
+
+function moveCellsRight() {
+  for (let i = 0; i < props.options.size; i++) {
+    for (let j = props.options.size - 1; j > 0; j--) {
+      for (let k = j - 1; k >= 0; k--) {
+        if (checkCells([i, j], [i, k])) {
+          break
+        }
+      }
+    }
+  }
+}
+
+function moveCellsDown() {
+  for (let j = 0; j < props.options.size; j++) {
+    for (let i = props.options.size - 1; i > 0; i--) {
+      for (let k = i - 1; k >= 0; k--) {
+        if (checkCells([i, j], [k, j])) {
+          break
+        }
+      }
+    }
+  }
+}
+
+function checkCells(position1: Array<number>, position2: Array<number>): boolean {
+  const cell1 = cells.value[position1[0]][position1[1]]
+  const cell2 = cells.value[position2[0]][position2[1]]
+  if (!cell1.value && cell2.value) {
+    cell1.value = cell2.value
+    cell2.value = null
+    cellChanged.value = true
+    return false
+  }
+
+  if (cell1.value && cell1.value === cell2.value) {
+    cell1.value *= 2
+    cell2.value = null
+    cellChanged.value = true
+    score.value += cell1.value
+    return true
+  }
+
+  return !!(cell1.value && cell2.value)
+}
+
+window.addEventListener('keydown', onKeyDown)
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeyDown)
+})
+
+initData()
 </script>
 
 <style scoped>
@@ -228,9 +183,11 @@ export default {
   background-color: #59838e;
   border-radius: 5px;
 }
+
 .line {
   display: flex;
 }
+
 .cell {
   width: 100px;
   height: 100px;
