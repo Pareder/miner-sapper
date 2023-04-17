@@ -1,34 +1,48 @@
 <template>
   <transition name="fade">
     <div>
-      <Modal v-if="victory" :result="spentTime" @restart="initData" />
+      <Modal
+        v-if="victory"
+        :result="spentTime"
+        @restart="initData"
+      />
       <div class="field">
-        <div class="row" v-for="(row, id) in cells" :key="id">
+        <div
+          v-for="(row, id) in cells"
+          :key="id"
+          class="row"
+        >
           <div
-            class="cell"
             v-for="(cell, idx) in row"
             :key="id + '' + idx"
-            @click="cellClick(id, idx)"
-            @contextmenu.prevent="cellRightClick(id, idx)"
+            class="cell"
             :class="cell && cell.clicked ?
               (cell.value === bomb ? 'bomb' : 'opened') :
               (cell && cell.rightClicked ? 'flag' : '')"
+            @click="cellClick(id, idx)"
+            @contextmenu.prevent="cellRightClick(id, idx)"
           >
             <span v-if="cell && cell.clicked && ([bomb, 0].indexOf(cell.value) === -1)">{{ cell.value }}</span>
           </div>
         </div>
       </div>
-      <button type="button" class="btn" @click.prevent="initData">Restart</button>
+      <button
+        type="button"
+        class="btn"
+        @click.prevent="initData"
+      >
+        Restart
+      </button>
     </div>
   </transition>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Cells } from '../types/miner'
-import getPositions from '../utils/miner/getPositions'
-import getRandomNumber from '../utils/getRandomNumber'
-import Modal from '../components/Modal.vue'
+import { Cells } from 'types/miner'
+import getPositions from 'utils/miner/getPositions'
+import getRandomNumber from 'utils/getRandomNumber'
+import Modal from 'components/Modal.vue'
 
 const props = defineProps<{
   options: {

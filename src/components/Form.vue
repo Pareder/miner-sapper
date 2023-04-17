@@ -1,18 +1,41 @@
 <template>
-  <form class="form" @submit.prevent="setNickname">
+  <form
+    class="form"
+    @submit.prevent="setNickname"
+  >
     <div class="row">
-      <input class="name" type="text" v-model="name" placeholder="Enter your name">
-      <input class="submit" type="submit" value="Send" :disabled="sent">
+      <input
+        v-model="name"
+        class="name"
+        type="text"
+        placeholder="Enter your name"
+      >
+      <input
+        class="submit"
+        type="submit"
+        value="Send"
+        :disabled="sent"
+      >
     </div>
-    <div v-if="error" class="error">Name length should be between 3 and 20 symbols</div>
-    <div v-if="sendingError" class="error">We apologize, server is currently unavailable, try again later</div>
+    <div
+      v-if="error"
+      class="error"
+    >
+      Name length should be between 3 and 20 symbols
+    </div>
+    <div
+      v-if="sendingError"
+      class="error"
+    >
+      We apologize, server is currently unavailable, try again later
+    </div>
   </form>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   sendingError: boolean,
 }>()
 const emit = defineEmits(['submitForm'])

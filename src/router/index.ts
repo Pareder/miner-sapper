@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../pages/Home.vue'
-import Miner from '../pages/Miner.vue'
-import Snake from '../pages/Snake.vue'
-import Tetris from '../pages/Tetris.vue'
-import Bubbles from '../pages/Bubbles.vue'
-import Numbers from '../pages/Numbers.vue'
-import config from '../config'
+import Home from 'pages/Home.vue'
+import Miner from 'pages/Miner.vue'
+import Snake from 'pages/Snake.vue'
+import Tetris from 'pages/Tetris.vue'
+import Bubbles from 'pages/Bubbles.vue'
+import Numbers from 'pages/Numbers.vue'
+import config from 'config'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -20,12 +20,12 @@ const router = createRouter({
           {
             name: 'description',
             content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
-              'Bubbles and 2048.'
+              'Bubbles and 2048.',
           },
           {
             property: 'og:description',
             content: 'Simple and interesting classical games made on Vue.js. Nothing new, only Minesweeper, Tetris, ' +
-              'Bubbles and 2048.'
+              'Bubbles and 2048.',
           },
         ],
       },
@@ -40,14 +40,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Classical minesweeper with 8x8 field.'
+            content: 'Classical minesweeper with 8x8 field.',
           },
           {
             property: 'og:description',
-            content: 'Classical minesweeper with 8x8 field.'
-          }
-        ]
-      }
+            content: 'Classical minesweeper with 8x8 field.',
+          },
+        ],
+      },
     },
     {
       name: 'Medium',
@@ -59,14 +59,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Classical minesweeper with 12x12 field.'
+            content: 'Classical minesweeper with 12x12 field.',
           },
           {
             property: 'og:description',
-            content: 'Classical minesweeper with 12x12 field.'
-          }
-        ]
-      }
+            content: 'Classical minesweeper with 12x12 field.',
+          },
+        ],
+      },
     },
     {
       name: 'Hard',
@@ -78,14 +78,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Classical minesweeper with 16x16 field.'
+            content: 'Classical minesweeper with 16x16 field.',
           },
           {
             property: 'og:description',
-            content: 'Classical minesweeper with 16x16 field.'
-          }
-        ]
-      }
+            content: 'Classical minesweeper with 16x16 field.',
+          },
+        ],
+      },
     },
     {
       name: 'Snake',
@@ -97,14 +97,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Snake. Use the arrow keys on your keyboard to play the game.'
+            content: 'Snake. Use the arrow keys on your keyboard to play the game.',
           },
           {
             property: 'og:description',
-            content: 'Snake. Use the arrow keys on your keyboard to play the game.'
-          }
-        ]
-      }
+            content: 'Snake. Use the arrow keys on your keyboard to play the game.',
+          },
+        ],
+      },
     },
     {
       name: 'Tetris',
@@ -116,14 +116,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Play Tetris. Browser-based online Tetris game. No download required.'
+            content: 'Play Tetris. Browser-based online Tetris game. No download required.',
           },
           {
             property: 'og:description',
-            content: 'Play Tetris. Browser-based online Tetris game. No download required.'
-          }
-        ]
-      }
+            content: 'Play Tetris. Browser-based online Tetris game. No download required.',
+          },
+        ],
+      },
     },
     {
       name: 'Bubbles',
@@ -135,14 +135,14 @@ const router = createRouter({
         metaTags: [
           {
             name: 'description',
-            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.'
+            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.',
           },
           {
             property: 'og:description',
-            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.'
-          }
-        ]
-      }
+            content: 'Try Bubbles game. The more bubbles you stuck, the more points you get.',
+          },
+        ],
+      },
     },
     {
       name: 'Numbers',
@@ -155,16 +155,16 @@ const router = createRouter({
           {
             name: 'description',
             content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add ' +
-              'numbers to win this one?'
+              'numbers to win this one?',
           },
           {
             property: 'og:description',
             content: '2+2=4... 4+4=8... 8+8=16... 16+16=32... How long will it take to get up to 2048? Can you add ' +
-              'numbers to win this one?'
-          }
-        ]
-      }
-    }
+              'numbers to win this one?',
+          },
+        ],
+      },
+    },
   ],
 })
 

@@ -19,7 +19,7 @@
               'grid-column': `${x + 1} / span 1`,
               'grid-row': `${y + 1} / span 1`
             }"
-          ></div>
+          />
           <div
             v-else
             :key="cell.id"
@@ -34,21 +34,25 @@
             }"
             @click="onCellClick"
             @mouseover="onCellMouseOver(x, y)"
-          ></div>
+          />
         </template>
       </template>
     </transition-group>
-    <Modal v-if="finish" :result="score" @restart="initData" />
+    <Modal
+      v-if="finish"
+      :result="score"
+      @restart="initData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Cells } from '../types/bubbles'
-import getPositions from '../utils/bubbles/getPositions'
-import getRandomNumber from '../utils/getRandomNumber'
-import randomString from '../utils/randomString'
-import Modal from '../components/Modal.vue'
+import { Cells } from 'types/bubbles'
+import getPositions from 'utils/bubbles/getPositions'
+import getRandomNumber from 'utils/getRandomNumber'
+import randomString from 'utils/randomString'
+import Modal from 'components/Modal.vue'
 
 const props = defineProps<{
   options: {
@@ -63,7 +67,7 @@ const finish = ref(false)
 const highlightedCellsCount = computed(() => cells.value
   .map(row => row.filter(cell => cell?.highlight))
   .flat()
-  .length
+  .length,
 )
 
 function initData() {

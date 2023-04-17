@@ -7,6 +7,6 @@ export default function getPositions(i: number, j: number): Array<Array<number>>
     [i, j + 1],
     [i + 1, j - 1],
     [i + 1, j],
-    [i + 1, j + 1]
+    [i + 1, j + 1],
   ]
 }

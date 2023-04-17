@@ -31,14 +31,14 @@ export enum CellValue {
 
 export type Cell = {
   value: CellValue,
-  color?: string,
+  color: string,
 }
 
 export type Cells = Array<Array<Cell>>
 
 export type RandomModel = {
-  type?: Models,
-  color?: string,
-  model?: Model | null,
-  rotated?: RotatedStatuses,
+  type: Models,
+  color: string,
+  model: Model | null,
+  rotated: RotatedStatuses,
 }

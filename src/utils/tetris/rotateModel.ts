@@ -28,14 +28,14 @@ export default function rotateModel(modelType: Models, model: Model, rotatedStat
 }
 
 function rotateIModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): RotatedModel {
-  if (rotatedStatus === RotatedStatuses.UP) {
+  if (rotatedStatus === RotatedStatuses.DOWN) {
     rotatedModel[0][0] -= 2
     rotatedModel[0][1] -= 2
     rotatedModel[1][0] -= 1
     rotatedModel[1][1] -= 1
     rotatedModel[3][0] += 1
     rotatedModel[3][1] += 1
-    rotatedStatus = RotatedStatuses.DOWN
+    rotatedStatus = RotatedStatuses.UP
   } else {
     rotatedModel[0][0] += 2
     rotatedModel[0][1] += 2
@@ -43,7 +43,7 @@ function rotateIModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): Rota
     rotatedModel[1][1] += 1
     rotatedModel[3][0] -= 1
     rotatedModel[3][1] -= 1
-    rotatedStatus = RotatedStatuses.UP
+    rotatedStatus = RotatedStatuses.DOWN
   }
 
   return {
@@ -94,20 +94,20 @@ function rotateTModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): Rota
 }
 
 function rotateSModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): RotatedModel {
-  if (rotatedStatus === RotatedStatuses.UP) {
+  if (rotatedStatus === RotatedStatuses.DOWN) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
     rotatedModel[2][0] -= 1
     rotatedModel[2][1] += 1
     rotatedModel[3][1] += 2
-    rotatedStatus = RotatedStatuses.DOWN
+    rotatedStatus = RotatedStatuses.UP
   } else {
     rotatedModel[0][0] += 1
     rotatedModel[0][1] += 1
     rotatedModel[2][0] += 1
     rotatedModel[2][1] -= 1
     rotatedModel[3][1] -= 2
-    rotatedStatus = RotatedStatuses.UP
+    rotatedStatus = RotatedStatuses.DOWN
   }
 
   return {
@@ -117,20 +117,20 @@ function rotateSModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): Rota
 }
 
 function rotateZModel(rotatedModel: Model, rotatedStatus: RotatedStatuses): RotatedModel {
-  if (rotatedStatus === RotatedStatuses.UP) {
+  if (rotatedStatus === RotatedStatuses.DOWN) {
     rotatedModel[0][0] -= 1
     rotatedModel[0][1] -= 1
     rotatedModel[2][0] += 1
     rotatedModel[2][1] -= 1
     rotatedModel[3][0] += 2
-    rotatedStatus = RotatedStatuses.DOWN
+    rotatedStatus = RotatedStatuses.UP
   } else {
     rotatedModel[0][0] += 1
     rotatedModel[0][1] += 1
     rotatedModel[2][0] -= 1
     rotatedModel[2][1] += 1
     rotatedModel[3][0] -= 2
-    rotatedStatus = RotatedStatuses.UP
+    rotatedStatus = RotatedStatuses.DOWN
   }
 
   return {

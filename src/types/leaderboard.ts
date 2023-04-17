@@ -1,5 +1,5 @@
 export type User = {
-  '.key': string,
+  key: string,
   name: string,
   result: number,
 }

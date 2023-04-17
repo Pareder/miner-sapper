@@ -19,6 +19,7 @@ describe('cellBackgroundColor utils', () => {
     [3, '#a0b8be'],
     [133, '#a0b8be'],
     [100000, '#a0b8be'],
+    [null, '#a0b8be'],
   ])('Should return correct result for value %p', (value, result) => {
     expect(cellBackgroundColor(value)).toEqual(result)
   })

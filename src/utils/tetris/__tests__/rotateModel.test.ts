@@ -11,14 +11,14 @@ describe('rotateModel method', () => {
         [0, 3],
         [0, 4],
         [0, 5],
-        [0, 6]
+        [0, 6],
       ],
       {
         rotatedModel: [
-          [-2, 1],
-          [-1, 3],
+          [2, 5],
+          [1, 5],
           [0, 5],
-          [1, 7]
+          [-1, 5],
         ],
         rotatedStatus: RotatedStatuses.DOWN,
       },
@@ -30,14 +30,14 @@ describe('rotateModel method', () => {
         [0, 3],
         [0, 4],
         [0, 5],
-        [0, 6]
+        [0, 6],
       ],
       {
         rotatedModel: [
-          [2, 5],
-          [1, 5],
+          [-2, 1],
+          [-1, 3],
           [0, 5],
-          [-1, 5]
+          [1, 7],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -49,14 +49,14 @@ describe('rotateModel method', () => {
         [1, 4],
         [0, 4],
         [0, 5],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [1, 4],
           [0, 4],
           [0, 5],
-          [1, 5]
+          [1, 5],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -68,14 +68,14 @@ describe('rotateModel method', () => {
         [1, 3],
         [1, 4],
         [0, 4],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [0, 4],
           [1, 4],
           [1, 5],
-          [2, 4]
+          [2, 4],
         ],
         rotatedStatus: RotatedStatuses.RIGHT,
       },
@@ -87,14 +87,14 @@ describe('rotateModel method', () => {
         [1, 3],
         [1, 4],
         [0, 4],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [2, 2],
           [1, 4],
           [1, 3],
-          [0, 6]
+          [0, 6],
         ],
         rotatedStatus: RotatedStatuses.DOWN,
       },
@@ -106,14 +106,14 @@ describe('rotateModel method', () => {
         [1, 3],
         [1, 4],
         [0, 4],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [0, 4],
           [1, 4],
           [-1, 3],
-          [2, 4]
+          [2, 4],
         ],
         rotatedStatus: RotatedStatuses.LEFT,
       },
@@ -125,14 +125,14 @@ describe('rotateModel method', () => {
         [1, 3],
         [1, 4],
         [0, 4],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [2, 2],
           [1, 4],
           [-1, 5],
-          [0, 6]
+          [0, 6],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -144,33 +144,33 @@ describe('rotateModel method', () => {
         [1, 3],
         [1, 4],
         [0, 4],
-        [0, 5]
-      ],
-      {
-        rotatedModel: [
-          [0, 2],
-          [1, 4],
-          [-1, 5],
-          [0, 7]
-        ],
-        rotatedStatus: RotatedStatuses.DOWN,
-      },
-    ],
-    [
-      Models.S,
-      RotatedStatuses.DOWN,
-      [
-        [1, 3],
-        [1, 4],
-        [0, 4],
-        [0, 5]
+        [0, 5],
       ],
       {
         rotatedModel: [
           [2, 4],
           [1, 4],
           [1, 3],
-          [0, 3]
+          [0, 3],
+        ],
+        rotatedStatus: RotatedStatuses.DOWN,
+      },
+    ],
+    [
+      Models.S,
+      RotatedStatuses.DOWN,
+      [
+        [1, 3],
+        [1, 4],
+        [0, 4],
+        [0, 5],
+      ],
+      {
+        rotatedModel: [
+          [0, 2],
+          [1, 4],
+          [-1, 5],
+          [0, 7],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -182,33 +182,33 @@ describe('rotateModel method', () => {
         [0, 3],
         [0, 4],
         [1, 4],
-        [1, 5]
-      ],
-      {
-        rotatedModel: [
-          [-1, 2],
-          [0, 4],
-          [2, 3],
-          [3, 5]
-        ],
-        rotatedStatus: RotatedStatuses.DOWN,
-      },
-    ],
-    [
-      Models.Z,
-      RotatedStatuses.DOWN,
-      [
-        [0, 3],
-        [0, 4],
-        [1, 4],
-        [1, 5]
+        [1, 5],
       ],
       {
         rotatedModel: [
           [1, 4],
           [0, 4],
           [0, 5],
-          [-1, 5]
+          [-1, 5],
+        ],
+        rotatedStatus: RotatedStatuses.DOWN,
+      },
+    ],
+    [
+      Models.Z,
+      RotatedStatuses.DOWN,
+      [
+        [0, 3],
+        [0, 4],
+        [1, 4],
+        [1, 5],
+      ],
+      {
+        rotatedModel: [
+          [-1, 2],
+          [0, 4],
+          [2, 3],
+          [3, 5],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -220,14 +220,14 @@ describe('rotateModel method', () => {
         [2, 4],
         [1, 4],
         [0, 4],
-        [0, 5]
+        [0, 5],
       ],
       {
         rotatedModel: [
           [1, 3],
           [1, 4],
           [1, 5],
-          [2, 5]
+          [2, 5],
         ],
         rotatedStatus: RotatedStatuses.RIGHT,
       },
@@ -239,14 +239,14 @@ describe('rotateModel method', () => {
         [2, 4],
         [1, 4],
         [0, 4],
-        [0, 5]
+        [0, 5],
       ],
       {
         rotatedModel: [
           [1, 5],
           [1, 4],
           [1, 3],
-          [0, 3]
+          [0, 3],
         ],
         rotatedStatus: RotatedStatuses.DOWN,
       },
@@ -258,14 +258,14 @@ describe('rotateModel method', () => {
         [2, 4],
         [1, 4],
         [0, 4],
-        [0, 5]
+        [0, 5],
       ],
       {
         rotatedModel: [
           [3, 5],
           [1, 4],
           [-1, 3],
-          [-2, 5]
+          [-2, 5],
         ],
         rotatedStatus: RotatedStatuses.LEFT,
       },
@@ -277,14 +277,14 @@ describe('rotateModel method', () => {
         [2, 4],
         [1, 4],
         [0, 4],
-        [0, 5]
+        [0, 5],
       ],
       {
         rotatedModel: [
           [3, 3],
           [1, 4],
           [-1, 5],
-          [0, 7]
+          [0, 7],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },
@@ -296,14 +296,14 @@ describe('rotateModel method', () => {
         [2, 5],
         [1, 5],
         [0, 5],
-        [0, 4]
+        [0, 4],
       ],
       {
         rotatedModel: [
           [1, 4],
           [1, 5],
           [1, 6],
-          [0, 6]
+          [0, 6],
         ],
         rotatedStatus: RotatedStatuses.RIGHT,
       },
@@ -315,14 +315,14 @@ describe('rotateModel method', () => {
         [2, 5],
         [1, 5],
         [0, 5],
-        [0, 4]
+        [0, 4],
       ],
       {
         rotatedModel: [
           [1, 6],
           [1, 5],
           [1, 4],
-          [2, 4]
+          [2, 4],
         ],
         rotatedStatus: RotatedStatuses.DOWN,
       },
@@ -334,14 +334,14 @@ describe('rotateModel method', () => {
         [2, 5],
         [1, 5],
         [0, 5],
-        [0, 4]
+        [0, 4],
       ],
       {
         rotatedModel: [
           [3, 6],
           [1, 5],
           [-1, 4],
-          [0, 2]
+          [0, 2],
         ],
         rotatedStatus: RotatedStatuses.LEFT,
       },
@@ -353,14 +353,14 @@ describe('rotateModel method', () => {
         [2, 5],
         [1, 5],
         [0, 5],
-        [0, 4]
+        [0, 4],
       ],
       {
         rotatedModel: [
           [3, 4],
           [1, 5],
           [-1, 6],
-          [-2, 4]
+          [-2, 4],
         ],
         rotatedStatus: RotatedStatuses.UP,
       },

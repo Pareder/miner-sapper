@@ -1,14 +1,20 @@
 <template>
   <transition name="fade">
     <div class="modal">
-      <div class="modal__backdrop"></div>
+      <div class="modal__backdrop" />
       <div class="modal__inner">
         <div class="modal__top">
           <h2>You lose</h2>
         </div>
         <div class="modal__body">
           <p>You can try again.</p>
-          <button type="button" class="btn" @click="$emit('restart')">Restart</button>
+          <button
+            type="button"
+            class="btn"
+            @click="$emit('restart')"
+          >
+            Restart
+          </button>
         </div>
       </div>
     </div>

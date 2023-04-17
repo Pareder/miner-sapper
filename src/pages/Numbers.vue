@@ -2,28 +2,36 @@
   <div>
     <h1>Score: {{ score }}</h1>
     <div class="field">
-      <div class="line" v-for="(line, id) in cells" :key="id">
+      <div
+        v-for="(line, id) in cells"
+        :key="id"
+        class="line"
+      >
         <div
-          class="cell"
           v-for="(cell, idx) in line"
           :key="id + '' + idx"
+          class="cell"
           :style="`background-color: ${ cellBackgroundColor(cell.value) }; color: ${ cellColor(cell.value) }`"
         >
           {{ cell.value }}
         </div>
       </div>
     </div>
-    <Modal v-if="finish" :result="score" @restart="initData" />
+    <Modal
+      v-if="finish"
+      :result="score"
+      @restart="initData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue'
-import { Cells } from '../types/numbers'
-import cellBackgroundColor from '../utils/cellBackgroundColor'
-import cellColor from '../utils/cellColor'
-import getRandomNumber from '../utils/getRandomNumber'
-import Modal from '../components/Modal.vue'
+import { Cells } from 'types/numbers'
+import cellBackgroundColor from 'utils/cellBackgroundColor'
+import cellColor from 'utils/cellColor'
+import getRandomNumber from 'utils/getRandomNumber'
+import Modal from 'components/Modal.vue'
 
 const props = defineProps<{
   options: {

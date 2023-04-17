@@ -6,7 +6,7 @@ describe('randomString utils', () => {
     2,
     4,
     8,
-    16
+    16,
   ])('Should return correct result for %p length', length => {
     const value = randomString(length)
 

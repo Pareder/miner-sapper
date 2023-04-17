@@ -8,6 +8,7 @@ describe('cellColor utils', () => {
     [255, '#776E65'],
     [256, '#ffffff'],
     [511, '#ffffff'],
+    [null, '#ffffff'],
   ])('Should return correct result for value %p', (value, result) => {
     expect(cellColor(value)).toEqual(result)
   })

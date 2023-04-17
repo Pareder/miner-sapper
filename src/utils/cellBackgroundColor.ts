@@ -1,4 +1,4 @@
-export default function cellBackgroundColor(value: number): string {
+export default function cellBackgroundColor(value?: number | null): string {
   switch (value) {
     case 2:
       return '#e2efe5'

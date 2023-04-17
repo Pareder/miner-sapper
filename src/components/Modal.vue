@@ -1,24 +1,37 @@
 <template>
   <transition name="fade">
     <div class="modal">
-      <div class="modal__backdrop"></div>
+      <div class="modal__backdrop" />
       <div class="modal__inner">
         <div class="modal__top">
           <h2>Good job!</h2>
         </div>
         <div class="modal__body">
-          <p>Enter your name to post the result <span class="text--green text--bold">
-            {{ isMiner ? formatTime(result) : result }}
-          </span></p>
-          <Form v-if="!leaderboardData.length" :sendingError="sendingError" @submitForm="getLeaderboard" />
-          <Leaderboard v-else
+          <p>
+            Enter your name to post the result <span class="text--green text--bold">
+              {{ isMiner ? formatTime(result) : result }}
+            </span>
+          </p>
+          <Form
+            v-if="!leaderboard.length"
+            :sending-error="sendingError"
+            @submit-form="getLeaderboard"
+          />
+          <Leaderboard
+            v-else
             :leaderboard="leaderboard"
             :position="position"
             :result="result"
-            :userKey="userKey"
-            :userName="userName"
+            :user-key="userKey"
+            :user-name="userName"
           />
-          <button type="button" class="btn" @click="$emit('restart')">Restart</button>
+          <button
+            type="button"
+            class="btn"
+            @click="$emit('restart')"
+          >
+            Restart
+          </button>
         </div>
       </div>
     </div>
@@ -28,25 +41,37 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { child, get, orderByChild, ref as firebaseRef, push, query, update } from 'firebase/database'
-import db from '../config/db'
-import formatTime from '../utils/formatTime'
+import {
+  endBefore,
+  get,
+  limitToFirst,
+  limitToLast,
+  orderByChild,
+  ref as firebaseRef,
+  push,
+  query,
+  startAfter,
+  update,
+} from 'firebase/database'
+import { User } from 'types/leaderboard'
+import db from 'config/db'
+import formatTime from 'utils/formatTime'
 import Form from './Form.vue'
 import Leaderboard from './Leaderboard.vue'
 
 const props = defineProps<{
   result: number,
 }>()
+defineEmits(['restart'])
+
 const route = useRoute()
 
-const leaderboardData = ref([])
-const recordsBefore = ref([])
+const leaderboard = ref<Array<User>>([])
 const position = ref(0)
 const userKey = ref('')
 const userName = ref('')
 const sendingError = ref(false)
 const isMiner = route.path.includes('miner')
-const leaderboard = isMiner ? leaderboardData.value : leaderboardData.value.slice().reverse()
 
 const mode = route.path.split('/').slice(1).join('_')
 const _db = firebaseRef(db, `results/${mode}`)
@@ -64,9 +89,23 @@ function getLeaderboard(name: string) {
   update(_db, updates)
     .then(() => {
       sendingError.value = false
-      query(_db).then(snapshot => {
-        if(snapshot.exists()) {
-
+      const leaderboardRef = query(_db, orderByChild('result'), isMiner ? limitToFirst(5) : limitToLast(5))
+      get(leaderboardRef).then(snapshot => {
+        if (snapshot.exists()) {
+          const value: { [key: string]: User } = snapshot.val()
+          leaderboard.value = Object.entries(value)
+            .map(([key, data]) => ({
+              key,
+              name: data.name,
+              result: data.result,
+            }))
+            .sort((a, b) => isMiner ? a.result - b.result : b.result - a.result)
+        }
+      })
+      const positionRef = query(_db, orderByChild('result'), isMiner ? endBefore(props.result) : startAfter(props.result))
+      get(positionRef).then(snapshot => {
+        if (snapshot.exists()) {
+          position.value = Object.keys(snapshot.val()).length + 1
         }
       })
     })

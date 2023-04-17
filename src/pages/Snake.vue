@@ -1,11 +1,26 @@
 <template>
   <div>
-    <div ref="field" class="field">
-      <div class="line" v-for="(line, id) in cells" :key="id">
-        <div class="cell" v-for="(cell, idx) in line" :key="id + '' + idx" :class="cell || ''"></div>
+    <div
+      ref="field"
+      class="field"
+    >
+      <div
+        v-for="(line, id) in cells"
+        :key="id"
+        class="line"
+      >
+        <div
+          v-for="(cell, idx) in line"
+          :key="id + '' + idx"
+          class="cell"
+          :class="cell || ''"
+        />
       </div>
     </div>
-    <LoseModal v-if="lose" @restart="initData" />
+    <LoseModal
+      v-if="lose"
+      @restart="initData"
+    />
   </div>
 </template>
 
@@ -13,7 +28,7 @@
 import { onUnmounted, ref } from 'vue'
 import { Cells, Snake } from 'types/snake'
 import getRandomNumber from 'utils/getRandomNumber'
-import LoseModal from '../components/LoseModal.vue'
+import LoseModal from 'components/LoseModal.vue'
 
 const props = defineProps<{
   options: {
@@ -145,7 +160,7 @@ function moveSnake() {
   if (snake.value[0][0] === bonus.value[0] && snake.value[0][1] === bonus.value[1]) {
     snake.value.push([
       lastPos[0],
-      lastPos[1]
+      lastPos[1],
     ])
 
     if (snake.value.length === props.options.size ** 2) {

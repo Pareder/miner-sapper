@@ -3,11 +3,15 @@
     <h1>Score: {{ score }}</h1>
     <div class="game">
       <div class="field">
-        <div class="line" v-for="(line, id) in cells" :key="id">
+        <div
+          v-for="(line, id) in cells"
+          :key="id"
+          class="line"
+        >
           <div
-            class="cell"
             v-for="(cell, idx) in line"
             :key="id + '' + idx"
+            class="cell"
             :style="[CellValue.Intersect, CellValue.Set].includes(cell.value) ?
               `background-color: ${lightenColor(cell.color)}; border: 1px solid ${cell.color}`:
               ''"
@@ -15,33 +19,41 @@
         </div>
       </div>
       <div class="next_model">
-        <div class="line" v-for="line in 3" :key="line">
+        <div
+          v-for="line in 3"
+          :key="line"
+          class="line"
+        >
           <div
-            class="cell"
             v-for="cell in 4"
             :key="`${line}_${cell}`"
+            class="cell"
             :style="checkNext(line - 1, cell - 1)
               ? `background-color: ${lightenColor(nextModel.color)}; border: 1px solid ${nextModel.color}`
               : ''
             "
-          ></div>
+          />
         </div>
       </div>
     </div>
-    <Modal v-if="lose" :result="score" @restart="initData" />
+    <Modal
+      v-if="lose"
+      :result="score"
+      @restart="initData"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 // TODO: debug Tetris, it does not work correctly
 import { computed, onUnmounted, ref } from 'vue'
-import { Cells, CellValue, Models, RandomModel } from '../types/tetris'
-import getRandomColor from '../utils/getRandomColor'
-import getRandomNumber from '../utils/getRandomNumber'
-import lightenColor from '../utils/lightenColor'
-import randomizeModel from '../utils/tetris/randomizeModel'
-import rotateModel from '../utils/tetris/rotateModel'
-import Modal from '../components/Modal.vue'
+import { Cells, CellValue, Models, RandomModel, RotatedStatuses } from 'types/tetris'
+import getRandomColor from 'utils/getRandomColor'
+import getRandomNumber from 'utils/getRandomNumber'
+import lightenColor from 'utils/lightenColor'
+import randomizeModel from 'utils/tetris/randomizeModel'
+import rotateModel from 'utils/tetris/rotateModel'
+import Modal from 'components/Modal.vue'
 
 const props = defineProps<{
   options: {
@@ -66,7 +78,10 @@ const spentTime = computed(() => Number((endTime.value - startTime.value) / 1000
 
 function initData() {
   cells.value = new Array(props.options.size[0]).fill(0).map(() => (
-    new Array(props.options.size[1]).fill(0).map(() => ({ value: CellValue.Unset }))
+    new Array(props.options.size[1]).fill(0).map(() => ({
+      value: CellValue.Unset,
+      color: '',
+    }))
   ))
   score.value = 0
   stepTime.value = 500
@@ -89,17 +104,19 @@ function initData() {
 }
 
 function getRandomModelType() {
-  const values = Object.values(Models)
-  const key = values[getRandomNumber(values.length)]
-  return Models[key]
+  const values = Object.keys(Models)
+    .map(n => Number.parseInt(n))
+    .filter(n => !Number.isNaN(n))
+  return values[getRandomNumber(values.length)]
 }
 
 function buildModel(): RandomModel {
   const type = getRandomModelType()
   return {
-    type: type,
+    type,
     color: getRandomColor(),
     model: randomizeModel(props.options.size[1], type),
+    rotated: RotatedStatuses.UP,
   }
 }
 

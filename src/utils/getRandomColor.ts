@@ -26,7 +26,7 @@ export default function getRandomColor(): string {
   const randomColor = [
     Math.floor(Math.random() * 255),
     Math.floor(Math.random() * 255),
-    Math.floor(Math.random() * 255)
+    Math.floor(Math.random() * 255),
   ]
 
   if (contrast(randomColor, bgColor) < 3) {

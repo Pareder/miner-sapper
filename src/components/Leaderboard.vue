@@ -4,8 +4,8 @@
     <ol>
       <li
         v-for="(user, id) in leaderboard"
-        :key="user['.key']"
-        :class="{ leader: user['.key'] === userKey }"
+        :key="user.key"
+        :class="{ leader: user.key === userKey }"
         :data-position="id + 1"
       >
         <mark>{{ user.name }}</mark>
@@ -13,9 +13,14 @@
       </li>
     </ol>
     <div v-if="position > 5">
-      <p class="skip">...</p>
+      <p class="skip">
+        ...
+      </p>
       <ol>
-        <li :data-position="position" class="not_leader">
+        <li
+          :data-position="position"
+          class="not_leader"
+        >
           <mark>{{ userName }}</mark>
           <span>{{ formatResult(result) }}</span>
         </li>
@@ -26,8 +31,8 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { User } from '../types/leaderboard'
-import formatTime from '../utils/formatTime'
+import { User } from 'types/leaderboard'
+import formatTime from 'utils/formatTime'
 
 defineProps<{
   leaderboard: User[],
