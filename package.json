@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "firebase": "^9.18.0",
+    "firebase": "^10.12.5",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
